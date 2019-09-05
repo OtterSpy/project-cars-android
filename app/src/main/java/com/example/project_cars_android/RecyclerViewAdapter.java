@@ -48,7 +48,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
         CarsModel carID = mDataset.get(position);
         holder.firstLineTextView.setText(carID.getEngine() + " | " + carID.getGearbox() + " | " + carID.getYear() + " г.");
-        holder.carNameTextView.setText(String.valueOf(position));
+        holder.carNameTextView.setText(carID.getMarkName() + " " + carID.getModelName());
         holder.priceTextView.setText(carID.getPrice() + "$  / ");
         holder.priceUahTextView.setText(carID.getPriceUah() + " UAH");
         holder.carMileAgeTextView.setText(carID.getMileage() + " | г. " + carID.getCity());
