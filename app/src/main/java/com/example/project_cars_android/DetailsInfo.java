@@ -6,21 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.project_cars_android.models.CarsModel;
-import com.example.project_cars_android.networking.ApiManager;
 import com.squareup.picasso.Picasso;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.ArrayList;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-import static com.example.project_cars_android.MainActivity.API_KEY;
 
 public class DetailsInfo extends AppCompatActivity {
 
@@ -46,7 +32,7 @@ public class DetailsInfo extends AppCompatActivity {
         CarsModel data = (CarsModel) getIntent().getSerializableExtra("details");
 
         Picasso.get().load(data.getPhotoData()).into(detailsInfoImageView);
-        carNameInfoTextView.setText(data.getCarName() + " " + data.getModelName());
+        carNameInfoTextView.setText(data.getMarkName() + " " + data.getModelName());
         cityInfo.setText(data.getCity() + ", " + data.getRegionName() + " обл.");
         mileAgeInfo.setText(data.getMileage() + " пробег");
         carType.setText(data.getSubCategoryNameEng());

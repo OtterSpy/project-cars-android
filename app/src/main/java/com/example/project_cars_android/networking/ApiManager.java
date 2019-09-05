@@ -26,10 +26,13 @@ public class ApiManager {
         return instance;
     }
 
-    public Call<ResponseBody> search(String apiKey, int pageNum) {
-        return service.search(apiKey, pageNum);
+    public Call<ResponseBody> search(String apiKey, int pageNum, int countPage) {
+        return service.search(apiKey, pageNum, countPage);
     }
     public Call<ResponseBody> info(String apiKey, int autoId) {
         return service.info(apiKey, autoId);
+    }
+    public Call<ResponseBody> searchMarks(String apiKey) {
+        return service.searchMarks(apiKey);
     }
 }

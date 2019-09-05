@@ -5,20 +5,57 @@ import java.io.Serializable;
 public class CarsModel implements Serializable {
 
     int id;
+    int modelId;
+    int markId;
+    String paramMarkName;
+    String paramModelName;
+
     String photoData;
     String engine;
     String gearbox;
     String year;
-    String carName;
+    String markName;
+    String modelName;
     String price;
     String priceUah;
     String mileage;
     String city;
     String regionName;
-    String modelName;
     String subCategoryNameEng;
     String description;
 
+
+    public String getParamMarkName() {
+        return paramMarkName;
+    }
+
+    public void setParamMarkName(String paramMarkName) {
+        this.paramMarkName = paramMarkName;
+    }
+
+    public String getParamModelName() {
+        return paramModelName;
+    }
+
+    public void setParamModelName(String paramModelName) {
+        this.paramModelName = paramModelName;
+    }
+
+    public int getModelId() {
+        return modelId;
+    }
+
+    public void setModelId(int modelId) {
+        this.modelId = modelId;
+    }
+
+    public int getMarkId() {
+        return markId;
+    }
+
+    public void setMarkId(int markId) {
+        this.markId = markId;
+    }
     public String getDescription() {
         return description;
     }
@@ -90,12 +127,12 @@ public class CarsModel implements Serializable {
         this.year = year;
     }
 
-    public String getCarName() {
-        return carName;
+    public String getMarkName() {
+        return markName;
     }
 
-    public void setCarName(String carName) {
-        this.carName = carName;
+    public void setMarkName(String markName) {
+        this.markName = markName;
     }
 
     public String getPrice() {
