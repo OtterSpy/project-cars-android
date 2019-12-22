@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -17,6 +16,7 @@
         android:layout_marginHorizontal="10dp"
         android:paddingStart="15dp"
         android:text="Mark"
+        android:onClick="marksClick"
         android:textAlignment="viewStart"/>
     <TextView
         android:layout_width="match_parent"
@@ -30,7 +30,38 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
         android:paddingStart="15dp"
-        android:text="Model"
+        android:text="model"
+        android:onClick="modelsClick"
+        android:textAlignment="viewStart"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textSize="17dp"
+        android:text="Выберите область:"/>
+    <Button
+        android:id="@+id/buttonSelectStates"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:paddingStart="15dp"
+        android:text="State"
+        android:onClick="statesClick"
+        android:textAlignment="viewStart"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textSize="17dp"
+        android:text="Выберите город:"/>
+    <Button
+        android:id="@+id/buttonSelectCity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:paddingStart="15dp"
+        android:text="City"
+        android:onClick="citiesClick"
         android:textAlignment="viewStart"/>
     <View
         android:layout_width="match_parent"

@@ -15,6 +15,8 @@ public class ParamListAdapter extends RecyclerView.Adapter<ParamListAdapter.Para
 
     ArrayList<CarsModel> mDataset;
 
+    boolean isModel, isCity, isMark, isState;
+
     public static class ParamListViewHolder extends RecyclerView.ViewHolder {
 
         public TextView paramTextView;
@@ -27,8 +29,12 @@ public class ParamListAdapter extends RecyclerView.Adapter<ParamListAdapter.Para
         }
     }
 
-    public ParamListAdapter(ArrayList<CarsModel> myDataset) {
+    public ParamListAdapter(ArrayList<CarsModel> myDataset, boolean isMark, boolean isModel, boolean isState, boolean isCity) {
         mDataset = myDataset;
+        this.isMark = isMark;
+        this.isModel = isModel;
+        this.isState = isState;
+        this.isCity = isCity;
     }
 
     @NonNull
@@ -40,8 +46,17 @@ public class ParamListAdapter extends RecyclerView.Adapter<ParamListAdapter.Para
     }
 
     @Override
-    public void onBindViewHolder(ParamListViewHolder recyclerViewHolder, int i) {
-
+    public void onBindViewHolder(ParamListViewHolder holder, int position) {
+        CarsModel params = mDataset.get(position);
+        if (isMark){
+            holder.paramTextView.setText(params.getParamMarkName());
+        } else if (isState) {
+            holder.paramTextView.setText(params.getParamStateName());
+        } else if (isModel) {
+            holder.paramTextView.setText(params.getParamModelName());
+        } else if (isCity) {
+            holder.paramTextView.setText(params.getParamCityName());
+        }
     }
 
     @Override

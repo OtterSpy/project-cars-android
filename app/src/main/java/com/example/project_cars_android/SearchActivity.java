@@ -7,6 +7,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.example.project_cars_android.models.CarsModel;
 import com.example.project_cars_android.networking.ApiManager;
@@ -27,12 +29,17 @@ public class SearchActivity extends AppCompatActivity {
 
     final static String API_KEY = "LV8tpree68pj0YpN5NfcXGFXkKcEWGUyxfJQYH5C";
     final static String TAG = "KEK";
-    //    private EndlessRecyclerViewScrollListener scrollListener;
+    private EndlessRecyclerViewScrollListener scrollListener;
     int pageNum;
 
     RecyclerView recyclerView;
     RecyclerView.Adapter mAdapter;
     RecyclerView.LayoutManager layoutManager;
+    ProgressBar progressBar;
+
+    TextView noResultTextView;
+
+    int markId, modelId, stateId, cityId;
 
     ArrayList<CarsModel> carInfoList;
 
@@ -42,28 +49,23 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_activity);
 
+        progressBar = findViewById(R.id.progressBar);
+        noResultTextView = findViewById(R.id.noResultTextView);
         carInfoList = new ArrayList<>();
         recyclerView = findViewById(R.id.recyclerView);
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
-//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-//                super.onScrollStateChanged(recyclerView, newState);
-//            }
-//
-//            @Override
-//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-//
-//                int visibleItemCount = layoutManager.getChildCount();
-//                int totalItemCount = layoutManager.getItemCount();
-//                int firstItem = layoutManager.find
-//            }
-//        });
         mAdapter = new RecyclerViewAdapter(carInfoList);
 
+        markId = getIntent().getIntExtra("markId", 0);
+        modelId = getIntent().getIntExtra("modelId", 0);
+        stateId = getIntent().getIntExtra("stateId", 0);
+        cityId = getIntent().getIntExtra("cityId", 0);
+
+        showProgressBar();
         fetchCarList(pageNum);
+
+        Log.d(TAG, "onCreate: " + markId + " " + modelId + " " + stateId + " " + cityId );
 
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
@@ -82,29 +84,34 @@ public class SearchActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(mAdapter);
 
-//        scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
-//            @Override
-//            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-//                pageNum = page;
-//                fetchCarList(page);
-//            }
-//        };
-//        recyclerView.addOnScrollListener(scrollListener);
+        scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                pageNum = page;
+                fetchCarList(page);
+            }
+        };
+        recyclerView.addOnScrollListener(scrollListener);
     }
 
     private void fetchCarList(int page) {
         final ArrayList<Integer> carList = new ArrayList<>();
-        Call<ResponseBody> searchCall = ApiManager.getInstance().search(API_KEY, page, 5);
+        Call<ResponseBody> searchCall = ApiManager.getInstance().search(API_KEY, markId, modelId, stateId, cityId, page, 10);
         searchCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
+                    showRecyclerView();
                     JSONObject object = new JSONObject(response.body().string());
                     JSONObject results = object.getJSONObject("result").getJSONObject("search_result");
                     JSONArray ids = results.getJSONArray("ids");
-                    for (int i = 0; i < ids.length(); i++) {
-                        int dataObj = ids.getInt(i);
-                        carList.add(dataObj);
+                    if (results.getInt("count") == 0) {
+                        showNoResultTextView();
+                    } else {
+                        for (int i = 0; i < ids.length(); i++) {
+                            int dataObj = ids.getInt(i);
+                            carList.add(dataObj);
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -160,6 +167,21 @@ public class SearchActivity extends AppCompatActivity {
                 Log.d(TAG, "onFailure:");
             }
         });
-        Log.d(TAG, "fetchCarList: " + page);
+
+    }
+    private void showProgressBar() {
+        progressBar.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
+        noResultTextView.setVisibility(View.GONE);
+    }
+    private void showRecyclerView() {
+        progressBar.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
+        noResultTextView.setVisibility(View.GONE);
+    }
+    private void showNoResultTextView() {
+        progressBar.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.GONE);
+        noResultTextView.setVisibility(View.VISIBLE);
     }
 }

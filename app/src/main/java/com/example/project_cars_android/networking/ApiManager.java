@@ -26,13 +26,22 @@ public class ApiManager {
         return instance;
     }
 
-    public Call<ResponseBody> search(String apiKey, int pageNum, int countPage) {
-        return service.search(apiKey, pageNum, countPage);
+    public Call<ResponseBody> search(String apiKey, int markId, int modelId, int stateId, int cityId, int pageNum, int countPage) {
+        return service.search(apiKey, markId, modelId, stateId, cityId, pageNum, countPage);
     }
     public Call<ResponseBody> info(String apiKey, int autoId) {
         return service.info(apiKey, autoId);
     }
     public Call<ResponseBody> searchMarks(String apiKey) {
         return service.searchMarks(apiKey);
+    }
+    public Call<ResponseBody> searchStates(String apiKey) {
+        return service.searchStates(apiKey);
+    }
+    public Call<ResponseBody> searchCity(int stateId, String apiKey) {
+        return service.searchCity(stateId, apiKey);
+    }
+    public Call<ResponseBody> searchModels(int markId, String apiKey) {
+        return service.searchModels(markId, apiKey);
     }
 }

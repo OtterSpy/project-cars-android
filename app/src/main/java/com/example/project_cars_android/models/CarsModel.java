@@ -5,10 +5,15 @@ import java.io.Serializable;
 public class CarsModel implements Serializable {
 
     int id;
-    int modelId;
     int markId;
+    int modelId;
+    int stateId;
+    int cityId;
+    int count;
     String paramMarkName;
     String paramModelName;
+    String paramStateName;
+    String paramCityName;
 
     String photoData;
     String engine;
@@ -24,6 +29,45 @@ public class CarsModel implements Serializable {
     String subCategoryNameEng;
     String description;
 
+    public int getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(int cityId) {
+        this.cityId = cityId;
+    }
+
+    public String getParamCityName() {
+        return paramCityName;
+    }
+
+    public void setParamCityName(String paramCityName) {
+        this.paramCityName = paramCityName;
+    }
+
+    public int getStateId() {
+        return stateId;
+    }
+
+    public void setStateId(int stateId) {
+        this.stateId = stateId;
+    }
+
+    public String getParamStateName() {
+        return paramStateName;
+    }
+
+    public void setParamStateName(String paramStateName) {
+        this.paramStateName = paramStateName;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
 
     public String getParamMarkName() {
         return paramMarkName;
@@ -56,6 +100,7 @@ public class CarsModel implements Serializable {
     public void setMarkId(int markId) {
         this.markId = markId;
     }
+
     public String getDescription() {
         return description;
     }
