@@ -39,7 +39,7 @@ public class SearchActivity extends AppCompatActivity {
 
     TextView noResultTextView;
 
-    int markId, modelId, stateId, cityId;
+    int bodystyleId, markId, modelId, stateId, cityId, priceFrom, priceTo, currency;
 
     ArrayList<CarsModel> carInfoList;
 
@@ -57,15 +57,19 @@ public class SearchActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         mAdapter = new RecyclerViewAdapter(carInfoList);
 
-        markId = getIntent().getIntExtra("markId", 0);
+        bodystyleId = getIntent().getIntExtra("bodystyleId", 0);
+        markId = getIntent().getIntExtra("markId", 1);
         modelId = getIntent().getIntExtra("modelId", 0);
         stateId = getIntent().getIntExtra("stateId", 0);
         cityId = getIntent().getIntExtra("cityId", 0);
+        priceFrom = getIntent().getIntExtra("priceFrom", 0);
+        priceTo = getIntent().getIntExtra("priceTo", 200000);
+        currency = getIntent().getIntExtra("currency", 1);
 
         showProgressBar();
         fetchCarList(pageNum);
 
-        Log.d(TAG, "onCreate: " + markId + " " + modelId + " " + stateId + " " + cityId );
+        Log.d(TAG, "onCreate: " + bodystyleId + " " + markId + " " + modelId + " " + stateId + " " + cityId + " " + priceFrom + " " + priceTo + " " + currency);
 
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
@@ -96,7 +100,7 @@ public class SearchActivity extends AppCompatActivity {
 
     private void fetchCarList(int page) {
         final ArrayList<Integer> carList = new ArrayList<>();
-        Call<ResponseBody> searchCall = ApiManager.getInstance().search(API_KEY, markId, modelId, stateId, cityId, page, 10);
+        Call<ResponseBody> searchCall = ApiManager.getInstance().search(API_KEY, bodystyleId, markId, modelId, stateId, cityId, page, 10, priceFrom, priceTo, currency);
         searchCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

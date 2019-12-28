@@ -8,6 +8,9 @@ import retrofit2.http.Query;
 
 public interface ProjectCarsApi {
 
+    @GET("auto/categories/1/bodystyles")
+    Call<ResponseBody> searchBodystyles(@Query("api_key") String apiKey);
+
     @GET("auto/categories/1/marks")
     Call<ResponseBody> searchMarks(@Query("api_key") String apiKey);
 
@@ -21,7 +24,7 @@ public interface ProjectCarsApi {
     Call<ResponseBody> searchCity(@Path("stateId") int stateId, @Query("api_key") String apiKey);
 
     @GET("auto/search")
-    Call<ResponseBody> search(@Query("api_key") String apiKey, @Query("marka_id[0]") int markId, @Query("model_id[0]") int modelId, @Query("state[0]") int stateId, @Query("city[0]") int cityId, @Query("page") int pageNum, @Query("countpage") int countPage);
+    Call<ResponseBody> search(@Query("api_key") String apiKey, @Query("bodystyle[0]") int bodystyleId, @Query("marka_id[0]") int markId, @Query("model_id[0]") int modelId, @Query("state[0]") int stateId, @Query("city[0]") int cityId, @Query("page") int pageNum, @Query("countpage") int countPage, @Query("price_ot") int priceFrom, @Query("price_do") int priceTo, @Query("currency") int currency);
 
     @GET("auto/info")
     Call<ResponseBody> info(@Query("api_key") String apiKey, @Query("auto_id") int autoId);

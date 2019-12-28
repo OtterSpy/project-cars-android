@@ -5,11 +5,14 @@ import java.io.Serializable;
 public class CarsModel implements Serializable {
 
     int id;
+    int bodystyleId;
     int markId;
     int modelId;
     int stateId;
     int cityId;
     int count;
+
+    String paramBodystyleName;
     String paramMarkName;
     String paramModelName;
     String paramStateName;
@@ -28,6 +31,22 @@ public class CarsModel implements Serializable {
     String regionName;
     String subCategoryNameEng;
     String description;
+
+    public int getBodystyleId() {
+        return bodystyleId;
+    }
+
+    public void setBodystyleId(int bodystyleId) {
+        this.bodystyleId = bodystyleId;
+    }
+
+    public String getParamBodystyleName() {
+        return paramBodystyleName;
+    }
+
+    public void setParamBodystyleName(String paramBodystyleName) {
+        this.paramBodystyleName = paramBodystyleName;
+    }
 
     public int getCityId() {
         return cityId;

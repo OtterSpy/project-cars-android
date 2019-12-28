@@ -26,11 +26,14 @@ public class ApiManager {
         return instance;
     }
 
-    public Call<ResponseBody> search(String apiKey, int markId, int modelId, int stateId, int cityId, int pageNum, int countPage) {
-        return service.search(apiKey, markId, modelId, stateId, cityId, pageNum, countPage);
+    public Call<ResponseBody> search(String apiKey, int bodystyleId, int markId, int modelId, int stateId, int cityId, int pageNum, int countPage, int priceFrom, int priceTo, int currency) {
+        return service.search(apiKey, bodystyleId, markId, modelId, stateId, cityId, pageNum, countPage, priceFrom, priceTo, currency);
     }
     public Call<ResponseBody> info(String apiKey, int autoId) {
         return service.info(apiKey, autoId);
+    }
+    public Call<ResponseBody> searchBodystyle(String apiKey) {
+        return service.searchBodystyles(apiKey);
     }
     public Call<ResponseBody> searchMarks(String apiKey) {
         return service.searchMarks(apiKey);
