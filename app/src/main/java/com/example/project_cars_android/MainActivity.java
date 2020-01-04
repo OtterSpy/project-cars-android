@@ -41,6 +41,10 @@ public class MainActivity extends AppCompatActivity {
     Integer paramCityId;
     Integer priceFrom;
     Integer priceTo;
+    Integer yearFrom;
+    Integer yearTo;
+    Integer raceFrom;
+    Integer raceTo;
     Integer currency;
 
     Button bodystyleButton;
@@ -50,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
     Button cityButton;
 
     EditText priceFromEditText, priceToEditText;
+    EditText yearFromEditText, yearToEditText;
+    EditText raceFromEditText, raceToEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +68,12 @@ public class MainActivity extends AppCompatActivity {
         cityButton = findViewById(R.id.buttonSelectCity);
         priceFromEditText = findViewById(R.id.priceFromEditText);
         priceToEditText = findViewById(R.id.priceToEditText);
+        yearFromEditText = findViewById(R.id.yearFromEditText);
+        yearToEditText = findViewById(R.id.yearToEditText);
+        raceFromEditText = findViewById(R.id.raceFromEditText);
+        raceToEditText = findViewById(R.id.raceToEditText);
 
-        paramMarkId = 1;
+        paramMarkId = 0;
         paramStateId = 0;
 
         currency = 1;
@@ -72,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         fetchMarkIdList();
         fetchStatesIdList();
 
-        Log.d(TAG, "onCreate: " + priceFromEditText.getText());
+//        Log.d(TAG, "onCreate: " + priceFromEditText.getText());
     }
     private void fetchBodystyleIdList() {
         paramBodystyleArrayList = new ArrayList<>();
@@ -131,31 +141,33 @@ public class MainActivity extends AppCompatActivity {
     }
     private void fetchModelIdList() {
         paramModelArrayList = new ArrayList<>();
-        Call<ResponseBody> modelsCall = ApiManager.getInstance().searchModels(paramMarkId, API_KEY);
-        modelsCall.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    JSONArray object = new JSONArray(response.body().string());
-                    for (int i = 0; i < object.length(); i++) {
-                        JSONObject tmpObj = object.getJSONObject(i);
-                        CarsModel modelParams = new CarsModel();
-                        modelParams.setParamModelName(tmpObj.getString("name"));
-                        modelParams.setModelId(tmpObj.getInt("value"));
-                        paramModelArrayList.add(modelParams);
+        if (paramMarkId != 0) {
+            Call<ResponseBody> modelsCall = ApiManager.getInstance().searchModels(paramMarkId, API_KEY);
+            modelsCall.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    try {
+                        JSONArray object = new JSONArray(response.body().string());
+                        for (int i = 0; i < object.length(); i++) {
+                            JSONObject tmpObj = object.getJSONObject(i);
+                            CarsModel modelParams = new CarsModel();
+                            modelParams.setParamModelName(tmpObj.getString("name"));
+                            modelParams.setModelId(tmpObj.getInt("value"));
+                            paramModelArrayList.add(modelParams);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
-            }
 
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
 
-            }
-        });
+                }
+            });
+        }
     }
 
     private void fetchStatesIdList() {
@@ -258,7 +270,27 @@ public class MainActivity extends AppCompatActivity {
         if (!priceToEditText.getText().toString().equals("")) {
             priceTo = Integer.parseInt(priceToEditText.getText().toString());
         } else {
-            priceTo = 200000;
+            priceTo = 0;
+        }
+        if (!yearFromEditText.getText().toString().equals("")) {
+            yearFrom = Integer.parseInt(yearFromEditText.getText().toString());
+        } else {
+            yearFrom = 0;
+        }
+        if (!yearToEditText.getText().toString().equals("")) {
+            yearTo = Integer.parseInt(yearToEditText.getText().toString());
+        } else {
+            yearTo = 0;
+        }
+        if (!raceFromEditText.getText().toString().equals("")) {
+            raceFrom = Integer.parseInt(raceFromEditText.getText().toString());
+        } else {
+            raceFrom = 0;
+        }
+        if (!raceToEditText.getText().toString().equals("")) {
+            raceTo = Integer.parseInt(raceToEditText.getText().toString());
+        } else {
+            raceTo = 0;
         }
         Intent intent = new Intent(MainActivity.this, SearchActivity.class);
         intent.putExtra("bodystyleId", paramBodystyleId);
@@ -268,6 +300,10 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("cityId", paramCityId);
         intent.putExtra("priceFrom", priceFrom);
         intent.putExtra("priceTo", priceTo);
+        intent.putExtra("yearFrom", yearFrom);
+        intent.putExtra("yearTo", yearTo);
+        intent.putExtra("raceFrom", raceFrom);
+        intent.putExtra("raceTo", raceTo);
         intent.putExtra("currency", currency);
 
         startActivity(intent);
@@ -284,7 +320,7 @@ public class MainActivity extends AppCompatActivity {
             }
         } else if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
-                paramMarkId = data.getIntExtra("markId", 1);
+                paramMarkId = data.getIntExtra("markId", 0);
                 String mark = data.getStringExtra("mark");
                 markButton.setText(mark);
             }

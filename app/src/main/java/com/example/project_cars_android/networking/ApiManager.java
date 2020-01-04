@@ -26,8 +26,8 @@ public class ApiManager {
         return instance;
     }
 
-    public Call<ResponseBody> search(String apiKey, int bodystyleId, int markId, int modelId, int stateId, int cityId, int pageNum, int countPage, int priceFrom, int priceTo, int currency) {
-        return service.search(apiKey, bodystyleId, markId, modelId, stateId, cityId, pageNum, countPage, priceFrom, priceTo, currency);
+    public Call<ResponseBody> search(String apiKey, int bodystyleId, int markId, int modelId, int stateId, int cityId, int pageNum, int countPage, int priceFrom, int priceTo, int yearFrom, int yearTo, int raceFrom, int raceTo, int currency) {
+        return service.search(apiKey, bodystyleId, markId, modelId, stateId, cityId, pageNum, countPage, priceFrom, priceTo, yearFrom, yearTo, raceFrom, raceTo, currency);
     }
     public Call<ResponseBody> info(String apiKey, int autoId) {
         return service.info(apiKey, autoId);

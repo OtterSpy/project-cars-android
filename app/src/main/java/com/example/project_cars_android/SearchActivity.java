@@ -39,7 +39,7 @@ public class SearchActivity extends AppCompatActivity {
 
     TextView noResultTextView;
 
-    int bodystyleId, markId, modelId, stateId, cityId, priceFrom, priceTo, currency;
+    Integer bodystyleId, markId, modelId, stateId, cityId, priceFrom, priceTo, yearFrom, yearTo, raceFrom, raceTo, currency;
 
     ArrayList<CarsModel> carInfoList;
 
@@ -58,18 +58,22 @@ public class SearchActivity extends AppCompatActivity {
         mAdapter = new RecyclerViewAdapter(carInfoList);
 
         bodystyleId = getIntent().getIntExtra("bodystyleId", 0);
-        markId = getIntent().getIntExtra("markId", 1);
+        markId = getIntent().getIntExtra("markId", 0);
         modelId = getIntent().getIntExtra("modelId", 0);
         stateId = getIntent().getIntExtra("stateId", 0);
         cityId = getIntent().getIntExtra("cityId", 0);
         priceFrom = getIntent().getIntExtra("priceFrom", 0);
-        priceTo = getIntent().getIntExtra("priceTo", 200000);
+        priceTo = getIntent().getIntExtra("priceTo", 0);
+        yearFrom = getIntent().getIntExtra("yearFrom", 0);
+        yearTo = getIntent().getIntExtra("yearTo", 0);
+        raceFrom = getIntent().getIntExtra("raceFrom", 0);
+        raceTo = getIntent().getIntExtra("raceTo", 0);
         currency = getIntent().getIntExtra("currency", 1);
 
         showProgressBar();
         fetchCarList(pageNum);
 
-        Log.d(TAG, "onCreate: " + bodystyleId + " " + markId + " " + modelId + " " + stateId + " " + cityId + " " + priceFrom + " " + priceTo + " " + currency);
+        Log.d(TAG, "onCreate: " + bodystyleId + " " + markId + " " + modelId + " " + stateId + " " + cityId + " " + priceFrom + " " + priceTo + " " + yearFrom + " " + yearTo + " " + raceFrom + " " + raceTo + " " + currency);
 
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
@@ -100,7 +104,7 @@ public class SearchActivity extends AppCompatActivity {
 
     private void fetchCarList(int page) {
         final ArrayList<Integer> carList = new ArrayList<>();
-        Call<ResponseBody> searchCall = ApiManager.getInstance().search(API_KEY, bodystyleId, markId, modelId, stateId, cityId, page, 10, priceFrom, priceTo, currency);
+        Call<ResponseBody> searchCall = ApiManager.getInstance().search(API_KEY, bodystyleId, markId, modelId, stateId, cityId, page, 10, priceFrom, priceTo, yearFrom, yearTo, raceFrom, raceTo, currency);
         searchCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

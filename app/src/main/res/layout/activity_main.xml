@@ -88,23 +88,64 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:columnCount="8">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="8"
+            android:padding="10dp"
+            android:textSize="17dp"
+            android:text="Цена: $"/>
+        <TextView
+            android:text="от:"
+            android:textSize="17dp"
+            android:padding="10dp"
+            android:layout_columnWeight="0"/>
+        <EditText
+            android:id="@+id/priceFromEditText"
+            android:inputType="numberSigned"
+            android:layout_columnWeight="1"
+            android:maxLength="12"
+            android:ems="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:text="до:"
+            android:textSize="17dp"
+            android:padding="10dp"
+            android:layout_columnWeight="0"/>
+        <EditText
+            android:id="@+id/priceToEditText"
+            android:inputType="numberSigned"
+            android:layout_columnSpan="3"
+            android:layout_columnWeight="1"
+            android:maxLength="12"
+            android:layout_marginEnd="10dp"
+            android:ems="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        </GridLayout>
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:columnCount="8">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_columnSpan="8"
                 android:padding="10dp"
                 android:textSize="17dp"
-                android:text="Цена:"/>
+                android:text="Год выпуска:"/>
             <TextView
                 android:text="от:"
                 android:textSize="17dp"
                 android:padding="10dp"
                 android:layout_columnWeight="0"/>
             <EditText
-                android:id="@+id/priceFromEditText"
+                android:id="@+id/yearFromEditText"
                 android:inputType="numberSigned"
                 android:layout_columnWeight="1"
-                android:maxLength="10"
+                android:maxLength="4"
                 android:ems="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -114,11 +155,52 @@
                 android:padding="10dp"
                 android:layout_columnWeight="0"/>
             <EditText
-                android:id="@+id/priceToEditText"
+                android:id="@+id/yearToEditText"
                 android:inputType="numberSigned"
                 android:layout_columnSpan="3"
                 android:layout_columnWeight="1"
-                android:maxLength="10"
+                android:maxLength="4"
+                android:layout_marginEnd="10dp"
+                android:ems="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </GridLayout>
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:columnCount="8">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_columnSpan="8"
+                android:padding="10dp"
+                android:textSize="17dp"
+                android:text="Пробег:"/>
+            <TextView
+                android:text="от:"
+                android:textSize="17dp"
+                android:padding="10dp"
+                android:layout_columnWeight="0"/>
+            <EditText
+                android:id="@+id/raceFromEditText"
+                android:inputType="numberSigned"
+                android:layout_columnWeight="1"
+                android:maxLength="8"
+                android:ems="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:text="до:"
+                android:textSize="17dp"
+                android:padding="10dp"
+                android:layout_columnWeight="0"/>
+            <EditText
+                android:id="@+id/raceToEditText"
+                android:inputType="numberSigned"
+                android:layout_columnSpan="3"
+                android:layout_columnWeight="1"
+                android:maxLength="8"
                 android:layout_marginEnd="10dp"
                 android:ems="1"
                 android:layout_width="wrap_content"
@@ -134,6 +216,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
+            android:layout_marginBottom="10dp"
             android:onClick="searchClick"
             android:text="Search"/>
     </LinearLayout>
