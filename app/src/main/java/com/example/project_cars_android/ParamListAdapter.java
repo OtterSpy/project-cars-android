@@ -15,7 +15,7 @@ public class ParamListAdapter extends RecyclerView.Adapter<ParamListAdapter.Para
 
     ArrayList<CarsModel> mDataset;
 
-    boolean isBodystyle, isModel, isCity, isMark, isState;
+    boolean isBodystyle, isModel, isCity, isMark, isState, isGearbox, isFuelType;
 
     public static class ParamListViewHolder extends RecyclerView.ViewHolder {
 
@@ -29,13 +29,15 @@ public class ParamListAdapter extends RecyclerView.Adapter<ParamListAdapter.Para
         }
     }
 
-    public ParamListAdapter(ArrayList<CarsModel> myDataset, boolean isBodystyle, boolean isMark, boolean isModel, boolean isState, boolean isCity) {
+    public ParamListAdapter(ArrayList<CarsModel> myDataset, boolean isBodystyle, boolean isMark, boolean isModel, boolean isState, boolean isCity, boolean isGearbox, boolean isFuelType) {
         mDataset = myDataset;
         this.isBodystyle = isBodystyle;
         this.isMark = isMark;
         this.isModel = isModel;
         this.isState = isState;
         this.isCity = isCity;
+        this.isGearbox = isGearbox;
+        this.isFuelType = isFuelType;
     }
 
     @NonNull
@@ -59,6 +61,10 @@ public class ParamListAdapter extends RecyclerView.Adapter<ParamListAdapter.Para
             holder.paramTextView.setText(params.getParamModelName());
         } else if (isCity) {
             holder.paramTextView.setText(params.getParamCityName());
+        } else if (isGearbox) {
+            holder.paramTextView.setText(params.getParamGearboxName());
+        } else if (isFuelType) {
+            holder.paramTextView.setText(params.getParamFuelTypeName());
         }
     }
 

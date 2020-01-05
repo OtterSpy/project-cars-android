@@ -34,17 +34,24 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<CarsModel> paramModelArrayList;
     ArrayList<CarsModel> paramStatesArrayList;
     ArrayList<CarsModel> paramCityArrayList;
+    ArrayList<CarsModel> paramGearboxArrayList;
+    ArrayList<CarsModel> paramFuelTypeArrayList;
+
     Integer paramBodystyleId;
     Integer paramMarkId;
     Integer paramModelId;
     Integer paramStateId;
     Integer paramCityId;
+    Integer paramGearboxId;
+    Integer paramFuelTypeId;
     Integer priceFrom;
     Integer priceTo;
     Integer yearFrom;
     Integer yearTo;
     Integer raceFrom;
     Integer raceTo;
+    Float engineFrom;
+    Float engineTo;
     Integer currency;
 
     Button bodystyleButton;
@@ -52,10 +59,13 @@ public class MainActivity extends AppCompatActivity {
     Button modelButton;
     Button stateButton;
     Button cityButton;
+    Button gearboxButton;
+    Button fuelTypeButton;
 
     EditText priceFromEditText, priceToEditText;
     EditText yearFromEditText, yearToEditText;
     EditText raceFromEditText, raceToEditText;
+    EditText engineFromEditText, engineToEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,12 +76,17 @@ public class MainActivity extends AppCompatActivity {
         modelButton = findViewById(R.id.buttonSelectModel);
         stateButton = findViewById(R.id.buttonSelectStates);
         cityButton = findViewById(R.id.buttonSelectCity);
+        gearboxButton = findViewById(R.id.buttonSelectGearbox);
+        fuelTypeButton = findViewById(R.id.buttonSelectFuelType);
+
         priceFromEditText = findViewById(R.id.priceFromEditText);
         priceToEditText = findViewById(R.id.priceToEditText);
         yearFromEditText = findViewById(R.id.yearFromEditText);
         yearToEditText = findViewById(R.id.yearToEditText);
         raceFromEditText = findViewById(R.id.raceFromEditText);
         raceToEditText = findViewById(R.id.raceToEditText);
+        engineFromEditText = findViewById(R.id.engineFromEditText);
+        engineToEditText = findViewById(R.id.engineToEditText);
 
         paramMarkId = 0;
         paramStateId = 0;
@@ -81,6 +96,8 @@ public class MainActivity extends AppCompatActivity {
         fetchBodystyleIdList();
         fetchMarkIdList();
         fetchStatesIdList();
+        fetchGearboxIdList();
+        fetchFuelTypeIdList();
 
 //        Log.d(TAG, "onCreate: " + priceFromEditText.getText());
     }
@@ -112,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
     }
-
     private void fetchMarkIdList() {
         paramMarkArrayList = new ArrayList<>();
         Call<ResponseBody> markCall = ApiManager.getInstance().searchMarks(API_KEY);
@@ -169,7 +185,6 @@ public class MainActivity extends AppCompatActivity {
             });
         }
     }
-
     private void fetchStatesIdList() {
         paramStatesArrayList = new ArrayList<>();
         Call<ResponseBody> statesCall = ApiManager.getInstance().searchStates(API_KEY);
@@ -200,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
     }
     private void fetchCityIdList() {
         paramCityArrayList = new ArrayList<>();
-        final Call<ResponseBody> citiesCall = ApiManager.getInstance().searchCity(paramStateId, API_KEY);
+        Call<ResponseBody> citiesCall = ApiManager.getInstance().searchCity(paramStateId, API_KEY);
         citiesCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -220,6 +235,60 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+    }
+    private void fetchGearboxIdList() {
+        paramGearboxArrayList = new ArrayList<>();
+        Call<ResponseBody> gearboxesCall = ApiManager.getInstance().searchGearbox(API_KEY);
+        gearboxesCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    JSONArray gearboxArray = new JSONArray(response.body().string());
+                    for (int i = 0; i < gearboxArray.length(); i++) {
+                        JSONObject gearboxObject = gearboxArray.getJSONObject(i);
+                        CarsModel gearboxParams = new CarsModel();
+                        gearboxParams.setParamGearboxName(gearboxObject.getString("name"));
+                        gearboxParams.setGearboxId(gearboxObject.getInt("value"));
+                        paramGearboxArrayList.add(gearboxParams);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+    }
+    private void fetchFuelTypeIdList() {
+        paramFuelTypeArrayList = new ArrayList<>();
+        Call<ResponseBody> fuelTypeCall = ApiManager.getInstance().searchFuelType(API_KEY);
+        fuelTypeCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    JSONArray fuelTypeArray = new JSONArray(response.body().string());
+                    for (int i = 0; i < fuelTypeArray.length(); i++) {
+                        JSONObject fuelTypeObject = fuelTypeArray.getJSONObject(i);
+                        CarsModel fuelTypeParams = new CarsModel();
+                        fuelTypeParams.setParamFuelTypeName(fuelTypeObject.getString("name"));
+                        fuelTypeParams.setFuelTypeId(fuelTypeObject.getInt("value"));
+                        paramFuelTypeArrayList.add(fuelTypeParams);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
 
@@ -261,6 +330,16 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(intent, 4);
         }
     }
+    public void gearboxesClick(View view) {
+        Intent intent = new Intent(MainActivity.this, ParamListActivity.class);
+        intent.putExtra("gearboxes", paramGearboxArrayList);
+        startActivityForResult(intent, 5);
+    }
+    public void fuelTypeClick(View view) {
+       Intent intent = new Intent(MainActivity.this, ParamListActivity.class);
+       intent.putExtra("fuelTypes", paramFuelTypeArrayList);
+       startActivityForResult(intent, 6);
+    }
     public void searchClick(View view) {
         if (!priceFromEditText.getText().toString().equals("")) {
             priceFrom = Integer.parseInt(priceFromEditText.getText().toString());
@@ -292,18 +371,32 @@ public class MainActivity extends AppCompatActivity {
         } else {
             raceTo = 0;
         }
+        if (!engineFromEditText.getText().toString().equals("")) {
+            engineFrom = Float.parseFloat(engineFromEditText.getText().toString());
+        } else {
+            engineFrom = 0f;
+        }
+        if (!engineToEditText.getText().toString().equals("")) {
+            engineTo = Float.parseFloat(engineToEditText.getText().toString());
+        } else {
+            engineTo = 0f;
+        }
         Intent intent = new Intent(MainActivity.this, SearchActivity.class);
         intent.putExtra("bodystyleId", paramBodystyleId);
         intent.putExtra("markId", paramMarkId);
         intent.putExtra("modelId", paramModelId);
         intent.putExtra("stateId", paramStateId);
         intent.putExtra("cityId", paramCityId);
+        intent.putExtra("gearboxId", paramGearboxId);
+        intent.putExtra("fuelTypeId", paramFuelTypeId);
         intent.putExtra("priceFrom", priceFrom);
         intent.putExtra("priceTo", priceTo);
         intent.putExtra("yearFrom", yearFrom);
         intent.putExtra("yearTo", yearTo);
         intent.putExtra("raceFrom", raceFrom);
         intent.putExtra("raceTo", raceTo);
+        intent.putExtra("engineFrom", engineFrom);
+        intent.putExtra("engineTo", engineTo);
         intent.putExtra("currency", currency);
 
         startActivity(intent);
@@ -343,6 +436,20 @@ public class MainActivity extends AppCompatActivity {
                 paramCityId = cityId;
                 String city = data.getStringExtra("city");
                 cityButton.setText(city);
+            }
+        } else if (requestCode == 5) {
+            if (resultCode == RESULT_OK) {
+                int gearboxId = data.getIntExtra("gearboxId", 0);
+                paramGearboxId = gearboxId;
+                String gearbox = data.getStringExtra("gearbox");
+                gearboxButton.setText(gearbox);
+            }
+        } else if (requestCode == 6) {
+            if (resultCode == RESULT_OK) {
+                int fuelTypeId = data.getIntExtra("fuelTypeId", 0);
+                paramFuelTypeId = fuelTypeId;
+                String fuelType = data.getStringExtra("fuelType");
+                gearboxButton.setText(fuelType);
             }
         }
     }

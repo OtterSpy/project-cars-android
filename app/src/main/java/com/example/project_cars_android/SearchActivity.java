@@ -39,7 +39,8 @@ public class SearchActivity extends AppCompatActivity {
 
     TextView noResultTextView;
 
-    Integer bodystyleId, markId, modelId, stateId, cityId, priceFrom, priceTo, yearFrom, yearTo, raceFrom, raceTo, currency;
+    Integer bodystyleId, markId, modelId, stateId, cityId, gearboxId, fuelTypeId, priceFrom, priceTo, yearFrom, yearTo, raceFrom, raceTo, currency;
+    Float engineFrom, engineTo;
 
     ArrayList<CarsModel> carInfoList;
 
@@ -62,18 +63,22 @@ public class SearchActivity extends AppCompatActivity {
         modelId = getIntent().getIntExtra("modelId", 0);
         stateId = getIntent().getIntExtra("stateId", 0);
         cityId = getIntent().getIntExtra("cityId", 0);
+        gearboxId = getIntent().getIntExtra("gearboxId", 0);
+        fuelTypeId = getIntent().getIntExtra("fuelTypeId", 0);
         priceFrom = getIntent().getIntExtra("priceFrom", 0);
         priceTo = getIntent().getIntExtra("priceTo", 0);
         yearFrom = getIntent().getIntExtra("yearFrom", 0);
         yearTo = getIntent().getIntExtra("yearTo", 0);
         raceFrom = getIntent().getIntExtra("raceFrom", 0);
         raceTo = getIntent().getIntExtra("raceTo", 0);
+        engineFrom = getIntent().getFloatExtra("engineFrom", 0);
+        engineTo = getIntent().getFloatExtra("engineTo", 0);
         currency = getIntent().getIntExtra("currency", 1);
 
         showProgressBar();
         fetchCarList(pageNum);
 
-        Log.d(TAG, "onCreate: " + bodystyleId + " " + markId + " " + modelId + " " + stateId + " " + cityId + " " + priceFrom + " " + priceTo + " " + yearFrom + " " + yearTo + " " + raceFrom + " " + raceTo + " " + currency);
+        Log.d(TAG, "onCreate: " + bodystyleId + " " + markId + " " + modelId + " " + stateId + " " + cityId + " " + gearboxId + " " + fuelTypeId + " " + priceFrom + " " + priceTo + " " + yearFrom + " " + yearTo + " " + raceFrom + " " + raceTo + " " + engineFrom + " " + engineTo + " " + currency);
 
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
@@ -104,7 +109,7 @@ public class SearchActivity extends AppCompatActivity {
 
     private void fetchCarList(int page) {
         final ArrayList<Integer> carList = new ArrayList<>();
-        Call<ResponseBody> searchCall = ApiManager.getInstance().search(API_KEY, bodystyleId, markId, modelId, stateId, cityId, page, 10, priceFrom, priceTo, yearFrom, yearTo, raceFrom, raceTo, currency);
+        Call<ResponseBody> searchCall = ApiManager.getInstance().search(API_KEY, bodystyleId, markId, modelId, stateId, cityId, gearboxId, fuelTypeId, page, 10, priceFrom, priceTo, yearFrom, yearTo, raceFrom, raceTo, engineFrom, engineTo, currency);
         searchCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
