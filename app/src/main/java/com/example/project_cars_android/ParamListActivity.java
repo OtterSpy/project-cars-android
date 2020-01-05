@@ -16,10 +16,13 @@ public class ParamListActivity extends AppCompatActivity {
     RecyclerView.Adapter mAdapter;
     RecyclerView.LayoutManager layoutManager;
 
+    ArrayList<CarsModel> bodystyleList;
     ArrayList<CarsModel> marksList;
     ArrayList<CarsModel> modelsList;
     ArrayList<CarsModel> statesList;
     ArrayList<CarsModel> citiesList;
+    ArrayList<CarsModel> gearboxesList;
+    ArrayList<CarsModel> fuelTypeList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,26 +33,46 @@ public class ParamListActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerViewParamList.setLayoutManager(layoutManager);
 
+        bodystyleList = (ArrayList<CarsModel>) getIntent().getSerializableExtra("bodystyles");
         marksList = (ArrayList<CarsModel>) getIntent().getSerializableExtra("marks");
         modelsList = (ArrayList<CarsModel>) getIntent().getSerializableExtra("models");
         statesList = (ArrayList<CarsModel>) getIntent().getSerializableExtra("states");
         citiesList = (ArrayList<CarsModel>) getIntent().getSerializableExtra("cities");
+        gearboxesList = (ArrayList<CarsModel>) getIntent().getSerializableExtra("gearboxes");
+        fuelTypeList = (ArrayList<CarsModel>) getIntent().getSerializableExtra("fuelTypes");
 
+        if (bodystyleList != null) {
+            mAdapter = new ParamListAdapter(bodystyleList, true, false, false, false, false, false, false);
+        }
         if (marksList != null) {
-            mAdapter = new ParamListAdapter(marksList, true, false, false, false);
+            mAdapter = new ParamListAdapter(marksList, false, true, false, false, false, false, false);
         }
         if (modelsList != null) {
-            mAdapter = new ParamListAdapter(modelsList, false, true, false, false);
+            mAdapter = new ParamListAdapter(modelsList, false, false, true, false, false, false, false);
         }
         if (statesList != null) {
-            mAdapter = new ParamListAdapter(statesList, false, false, true, false);
+            mAdapter = new ParamListAdapter(statesList, false, false, false, true, false, false, false);
         }
         if (citiesList != null) {
-            mAdapter = new ParamListAdapter(citiesList, false, false, false, true);
+            mAdapter = new ParamListAdapter(citiesList, false, false, false, false, true, false, false);
+        }
+        if (gearboxesList != null) {
+            mAdapter = new ParamListAdapter(gearboxesList, false, false, false, false, false, true, false);
+        }
+        if (fuelTypeList != null) {
+            mAdapter = new ParamListAdapter(fuelTypeList, false, false, false, false, false, false, true);
         }
         recyclerViewParamList.addOnItemTouchListener(new RecyclerItemClickListener(this, recyclerViewParamList, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+                if (bodystyleList != null) {
+                    CarsModel bodystyles = bodystyleList.get(position);
+                    Intent intent = new Intent(ParamListActivity.this, MainActivity.class);
+                    intent.putExtra("bodystyle", bodystyles.getParamBodystyleName());
+                    intent.putExtra("bodystyleId", bodystyles.getBodystyleId());
+                    setResult(RESULT_OK, intent);
+                    ParamListActivity.this.finish();
+                }
                 if (marksList != null){
                     CarsModel marks = marksList.get(position);
                     Intent intent = new Intent(ParamListActivity.this, MainActivity.class);
@@ -78,12 +101,24 @@ public class ParamListActivity extends AppCompatActivity {
                     intent.putExtra("cityId", cities.getCityId());
                     setResult(RESULT_OK, intent);
                     ParamListActivity.this.finish();
+                } else if (gearboxesList != null) {
+                    CarsModel gearboxes = gearboxesList.get(position);
+                    Intent intent = new Intent(ParamListActivity.this, MainActivity.class);
+                    intent.putExtra("gearbox", gearboxes.getParamGearboxName());
+                    intent.putExtra("gearboxId", gearboxes.getGearboxId());
+                    setResult(RESULT_OK, intent);
+                    ParamListActivity.this.finish();
+                } else if (fuelTypeList != null) {
+                    CarsModel fuelTypes = fuelTypeList.get(position);
+                    Intent intent = new Intent(ParamListActivity.this, MainActivity.class);
+                    intent.putExtra("fuelType", fuelTypes.getParamFuelTypeName());
+                    intent.putExtra("fuelTypeId", fuelTypes.getFuelTypeId());
+                    setResult(RESULT_OK, intent);
+                    ParamListActivity.this.finish();
                 }
             }
-
             @Override
             public void onLongItemClick(View view, int position) {
-
             }
         }));
         recyclerViewParamList.setAdapter(mAdapter);

@@ -5,15 +5,22 @@ import java.io.Serializable;
 public class CarsModel implements Serializable {
 
     int id;
+    int bodystyleId;
     int markId;
     int modelId;
     int stateId;
     int cityId;
+    int gearboxId;
+    int fuelTypeId;
     int count;
+
+    String paramBodystyleName;
     String paramMarkName;
     String paramModelName;
     String paramStateName;
     String paramCityName;
+    String paramGearboxName;
+    String paramFuelTypeName;
 
     String photoData;
     String engine;
@@ -28,6 +35,54 @@ public class CarsModel implements Serializable {
     String regionName;
     String subCategoryNameEng;
     String description;
+
+    public int getFuelTypeId() {
+        return fuelTypeId;
+    }
+
+    public void setFuelTypeId(int fuelTypeId) {
+        this.fuelTypeId = fuelTypeId;
+    }
+
+    public String getParamFuelTypeName() {
+        return paramFuelTypeName;
+    }
+
+    public void setParamFuelTypeName(String paramFuelTypeName) {
+        this.paramFuelTypeName = paramFuelTypeName;
+    }
+
+    public int getGearboxId() {
+        return gearboxId;
+    }
+
+    public void setGearboxId(int gearboxId) {
+        this.gearboxId = gearboxId;
+    }
+
+    public String getParamGearboxName() {
+        return paramGearboxName;
+    }
+
+    public void setParamGearboxName(String paramGearboxName) {
+        this.paramGearboxName = paramGearboxName;
+    }
+
+    public int getBodystyleId() {
+        return bodystyleId;
+    }
+
+    public void setBodystyleId(int bodystyleId) {
+        this.bodystyleId = bodystyleId;
+    }
+
+    public String getParamBodystyleName() {
+        return paramBodystyleName;
+    }
+
+    public void setParamBodystyleName(String paramBodystyleName) {
+        this.paramBodystyleName = paramBodystyleName;
+    }
 
     public int getCityId() {
         return cityId;
