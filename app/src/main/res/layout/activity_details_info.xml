@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/detailsInfoContainer"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,6 +17,7 @@
         <ImageView
             android:id="@+id/detailsInfoImageView"
             android:layout_width="match_parent"
+            android:onClick="photoViewerOnClick"
             android:layout_height="270dp"/>
         <LinearLayout
             android:id="@+id/details"

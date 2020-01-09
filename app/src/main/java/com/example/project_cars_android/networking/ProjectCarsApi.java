@@ -53,4 +53,6 @@ public interface ProjectCarsApi {
     @GET("auto/info")
     Call<ResponseBody> info(@Query("api_key") String apiKey, @Query("auto_id") int autoId);
 
+    @GET("auto/fotos/{autoId}")
+    Call<ResponseBody> photoData(@Path("autoId") int autoId, @Query("api_key") String apiKey);
 }

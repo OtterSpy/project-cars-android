@@ -1,6 +1,4 @@
 package com.example.project_cars_android;
-
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,7 +38,6 @@ public class ParamListAdapter extends RecyclerView.Adapter<ParamListAdapter.Para
         this.isFuelType = isFuelType;
     }
 
-    @NonNull
     @Override
     public ParamListViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.param_item, viewGroup, false);

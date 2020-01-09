@@ -23,6 +23,7 @@ public class CarsModel implements Serializable {
     String paramFuelTypeName;
 
     String photoData;
+    String photoUrl;
     String engine;
     String gearbox;
     String year;
@@ -35,6 +36,14 @@ public class CarsModel implements Serializable {
     String regionName;
     String subCategoryNameEng;
     String description;
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
 
     public int getFuelTypeId() {
         return fuelTypeId;
