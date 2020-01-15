@@ -307,7 +307,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "marksClick: " + paramMarkArrayList);
     }
     public void modelsClick(View view) {
-        if (paramMarkId == 1) {
+        if (paramMarkId == 0) {
             Toast.makeText(this, "Select Mark", Toast.LENGTH_SHORT).show();
         } else {
             Intent intent = new Intent(MainActivity.this, ParamListActivity.class);
@@ -449,7 +449,7 @@ public class MainActivity extends AppCompatActivity {
                 int fuelTypeId = data.getIntExtra("fuelTypeId", 0);
                 paramFuelTypeId = fuelTypeId;
                 String fuelType = data.getStringExtra("fuelType");
-                gearboxButton.setText(fuelType);
+                fuelTypeButton.setText(fuelType);
             }
         }
     }
