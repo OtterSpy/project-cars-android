@@ -1,5 +1,6 @@
 package com.example.project_cars_android;
 
+import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.ablanco.zoomy.Zoomy;
 import com.example.project_cars_android.models.CarsModel;
 import com.squareup.picasso.Picasso;
 
@@ -22,7 +24,7 @@ public class PhotosListAdapter extends RecyclerView.Adapter<PhotosListAdapter.Ph
 
         ImageView photoItemImageView;
 
-        public PhotosListViewHolder(View itemView) {
+        public PhotosListViewHolder(final View itemView) {
             super(itemView);
             photoItemImageView = itemView.findViewById(R.id.photoItemImageView);
         }
@@ -31,17 +33,20 @@ public class PhotosListAdapter extends RecyclerView.Adapter<PhotosListAdapter.Ph
         mDataset = myDataset;
     }
     @Override
-    public PhotosListAdapter.PhotosListViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public PhotosListAdapter.PhotosListViewHolder onCreateViewHolder(final ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.image_item, viewGroup, false);
         PhotosListViewHolder viewHolder = new PhotosListViewHolder(view);
+        Zoomy.Builder builder = new Zoomy.Builder((Activity) view.getContext()).target(view).enableImmersiveMode(false);
+        builder.register();
         return viewHolder;
     }
     @Override
-    public void onBindViewHolder(PhotosListAdapter.PhotosListViewHolder photosListViewHolder, int i) {
-        CarsModel photoId = mDataset.get(i);
+    public void onBindViewHolder(final PhotosListAdapter.PhotosListViewHolder photosListViewHolder, final int i) {
+        final CarsModel photoId = mDataset.get(i);
         Picasso.get().load(photoId.getPhotoUrl()).into(photosListViewHolder.photoItemImageView);
         Log.d(TAG, "onBindViewHolder: " + photoId);
     }
+
     @Override
     public int getItemCount() {
         return mDataset.size();

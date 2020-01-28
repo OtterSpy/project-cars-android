@@ -419,8 +419,7 @@ public class MainActivity extends AppCompatActivity {
             }
         } else if (requestCode == 2) {
             if (resultCode == RESULT_OK) {
-                int modelId = data.getIntExtra("modelId", 0);
-                paramModelId = modelId;
+                paramModelId = data.getIntExtra("modelId", 0);
                 String model = data.getStringExtra("model");
                 modelButton.setText(model);
             }
@@ -432,6 +431,7 @@ public class MainActivity extends AppCompatActivity {
             }
         } else if (requestCode == 4) {
             if (resultCode == RESULT_OK) {
+
                 int cityId = data.getIntExtra("cityId", 0);
                 paramCityId = cityId;
                 String city = data.getStringExtra("city");

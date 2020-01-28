@@ -1,5 +1,4 @@
 package com.example.project_cars_android;
-import android.preference.PreferenceActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;

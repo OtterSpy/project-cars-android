@@ -29,7 +29,6 @@ public class ParamListActivity extends AppCompatActivity {
     ArrayList<CarsModel> gearboxesList;
     ArrayList<CarsModel> fuelTypeList;
     ArrayList<CarsModel> tmpArray;
-    ArrayList<CarsModel> paramArray;
 
     EditText searchParamEditText;
 
