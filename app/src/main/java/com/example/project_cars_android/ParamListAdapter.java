@@ -1,6 +1,4 @@
 package com.example.project_cars_android;
-
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +12,7 @@ import java.util.ArrayList;
 public class ParamListAdapter extends RecyclerView.Adapter<ParamListAdapter.ParamListViewHolder> {
 
     ArrayList<CarsModel> mDataset;
+    public CarsModel params;
 
     boolean isBodystyle, isModel, isCity, isMark, isState, isGearbox, isFuelType;
 
@@ -40,7 +39,6 @@ public class ParamListAdapter extends RecyclerView.Adapter<ParamListAdapter.Para
         this.isFuelType = isFuelType;
     }
 
-    @NonNull
     @Override
     public ParamListViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.param_item, viewGroup, false);
@@ -50,7 +48,11 @@ public class ParamListAdapter extends RecyclerView.Adapter<ParamListAdapter.Para
 
     @Override
     public void onBindViewHolder(ParamListViewHolder holder, int position) {
-        CarsModel params = mDataset.get(position);
+        if (isHeader(position)) {
+            holder.paramTextView.setText("Все");
+            return;
+        }
+        params = mDataset.get(position - 1);
         if (isBodystyle) {
             holder.paramTextView.setText(params.getParamBodystyleName());
         } else if (isMark){
@@ -69,7 +71,16 @@ public class ParamListAdapter extends RecyclerView.Adapter<ParamListAdapter.Para
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return isHeader(position) ? 0 : 1;
+    }
+
+    public boolean isHeader (int position) {
+        return position == 0;
+    }
+
+    @Override
     public int getItemCount() {
-        return mDataset.size();
+        return mDataset.size() + 1;
     }
 }

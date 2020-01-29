@@ -307,7 +307,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "marksClick: " + paramMarkArrayList);
     }
     public void modelsClick(View view) {
-        if (paramMarkId == 1) {
+        if (paramMarkId == 0) {
             Toast.makeText(this, "Select Mark", Toast.LENGTH_SHORT).show();
         } else {
             Intent intent = new Intent(MainActivity.this, ParamListActivity.class);
@@ -419,8 +419,7 @@ public class MainActivity extends AppCompatActivity {
             }
         } else if (requestCode == 2) {
             if (resultCode == RESULT_OK) {
-                int modelId = data.getIntExtra("modelId", 0);
-                paramModelId = modelId;
+                paramModelId = data.getIntExtra("modelId", 0);
                 String model = data.getStringExtra("model");
                 modelButton.setText(model);
             }
@@ -432,6 +431,7 @@ public class MainActivity extends AppCompatActivity {
             }
         } else if (requestCode == 4) {
             if (resultCode == RESULT_OK) {
+
                 int cityId = data.getIntExtra("cityId", 0);
                 paramCityId = cityId;
                 String city = data.getStringExtra("city");
@@ -449,7 +449,7 @@ public class MainActivity extends AppCompatActivity {
                 int fuelTypeId = data.getIntExtra("fuelTypeId", 0);
                 paramFuelTypeId = fuelTypeId;
                 String fuelType = data.getStringExtra("fuelType");
-                gearboxButton.setText(fuelType);
+                fuelTypeButton.setText(fuelType);
             }
         }
     }

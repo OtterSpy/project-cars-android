@@ -1,6 +1,8 @@
 package com.example.project_cars_android.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class CarsModel implements Serializable {
 
@@ -23,6 +25,7 @@ public class CarsModel implements Serializable {
     String paramFuelTypeName;
 
     String photoData;
+    String photoUrl;
     String engine;
     String gearbox;
     String year;
@@ -35,6 +38,29 @@ public class CarsModel implements Serializable {
     String regionName;
     String subCategoryNameEng;
     String description;
+
+    private ArrayList<String> DataString = new ArrayList<>();
+
+    public String getCarIndexProperty(int indexProperty) {
+//        Arrays.asList(new String[]{paramBodystyleName, paramMarkName, paramModelName, paramStateName, paramCityName, paramGearboxName, paramFuelTypeName});
+        DataString.clear();
+        DataString.add(paramBodystyleName);
+        DataString.add(paramMarkName);
+        DataString.add(paramModelName);
+        DataString.add(paramStateName);
+        DataString.add(paramCityName);
+        DataString.add(paramGearboxName);
+        DataString.add(paramFuelTypeName);
+        return DataString.get(indexProperty);
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
 
     public int getFuelTypeId() {
         return fuelTypeId;
