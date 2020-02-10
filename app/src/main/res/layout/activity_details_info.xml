@@ -5,20 +5,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <ScrollView
+        android:id="@+id/contentScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/footer"
         android:layout_alignParentTop="true">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginBottom="5dp">
         <ImageView
             android:id="@+id/detailsInfoImageView"
-            android:layout_width="match_parent"
             android:onClick="photoViewerOnClick"
+            android:layout_width="match_parent"
             android:layout_height="270dp"/>
+        <TextView
+            android:id="@+id/photoCountTextView"
+            android:text="photo"
+            android:background="#ccc"
+            android:layout_marginTop="-270dp"
+            android:paddingHorizontal="7dp"
+            android:paddingVertical="2dp"
+            android:layout_margin="7dp"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
         <LinearLayout
             android:id="@+id/details"
             android:layout_width="match_parent"
@@ -79,27 +91,53 @@
         </LinearLayout>
     </LinearLayout>
     </ScrollView>
-        <LinearLayout
+        <GridLayout
             android:id="@+id/footer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
             android:layout_alignParentBottom="true"
             android:padding="10dp"
+            android:columnCount="2"
+            android:rowCount="2"
             android:orientation="vertical">
             <TextView
                 android:id="@+id/priceInfo"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:textColor="#000000"
+                android:layout_column="0"
                 android:text="price"
                 android:textSize="20sp"/>
             <TextView
                 android:id="@+id/priceUahInfo"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_column="0"
                 android:text="priceUah"
                 android:textSize="17sp" />
-        </LinearLayout>
+
+            <Button
+                android:id="@+id/openRiaButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:layout_gravity="end"
+                android:layout_rowSpan="2"
+                android:onClick="openRiaOnClick"
+                android:text="open in Ria"/>
+        </GridLayout>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleX="0.2"
+        android:scaleY="0.2"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+    <include
+        layout="@layout/empty_stab_layout"
+        android:id="@+id/emptyStab"
+        android:visibility="gone"/>
 </RelativeLayout>

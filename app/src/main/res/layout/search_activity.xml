@@ -6,20 +6,26 @@
     <TextView
         android:id="@+id/noResultTextView"
         android:text="Нет результата по даному запросу"
-        android:paddingTop="250dp"
-        android:layout_gravity="center_vertical|center_horizontal"
+        android:gravity="center"
         android:textSize="20sp"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="50dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal"/>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone">
     </android.support.v7.widget.RecyclerView>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleX="0.2"
+        android:scaleY="0.2"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+    <include
+        layout="@layout/empty_stab_layout"
+        android:id="@+id/emptyStab"
+        android:visibility="gone"/>
 </LinearLayout>

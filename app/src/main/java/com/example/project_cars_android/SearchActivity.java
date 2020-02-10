@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -36,6 +37,7 @@ public class SearchActivity extends AppCompatActivity {
     RecyclerView.Adapter mAdapter;
     RecyclerView.LayoutManager layoutManager;
     ProgressBar progressBar;
+    LinearLayout emptyStub;
 
     TextView noResultTextView;
 
@@ -51,6 +53,7 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.search_activity);
 
         progressBar = findViewById(R.id.progressBar);
+        emptyStub = findViewById(R.id.emptyStab);
         noResultTextView = findViewById(R.id.noResultTextView);
         carInfoList = new ArrayList<>();
         recyclerView = findViewById(R.id.recyclerView);
@@ -75,7 +78,17 @@ public class SearchActivity extends AppCompatActivity {
         engineTo = getIntent().getFloatExtra("engineTo", 0);
         currency = getIntent().getIntExtra("currency", 1);
 
+
+        emptyStub.findViewById(R.id.emptyStubButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showProgressBar();
+                fetchCarList(pageNum);
+            }
+        });
+
         showProgressBar();
+
         fetchCarList(pageNum);
 
         Log.d(TAG, "onCreate: " + bodystyleId + " " + markId + " " + modelId + " " + stateId + " " + cityId + " " + gearboxId + " " + fuelTypeId + " " + priceFrom + " " + priceTo + " " + yearFrom + " " + yearTo + " " + raceFrom + " " + raceTo + " " + engineFrom + " " + engineTo + " " + currency);
@@ -159,6 +172,8 @@ public class SearchActivity extends AppCompatActivity {
                                 carsModel.setRegionName(stateData.getString("regionName"));
                                 carsModel.setSubCategoryNameEng(autoData.getString("subCategoryNameEng"));
                                 carsModel.setDescription(autoData.getString("description"));
+                                carsModel.setAutoLink(object.getString("linkToView"));
+                                carsModel.setCount(imageData.getInt("count"));
 
                                 carInfoList.add(carsModel);
                                 mAdapter.notifyDataSetChanged();
@@ -177,6 +192,7 @@ public class SearchActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
+                showEmptyStub();
                 Log.d(TAG, "onFailure:");
             }
         });
@@ -186,15 +202,25 @@ public class SearchActivity extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
         noResultTextView.setVisibility(View.GONE);
+        emptyStub.setVisibility(View.GONE);
     }
     private void showRecyclerView() {
         progressBar.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
         noResultTextView.setVisibility(View.GONE);
+        emptyStub.setVisibility(View.GONE);
+
     }
     private void showNoResultTextView() {
         progressBar.setVisibility(View.GONE);
         recyclerView.setVisibility(View.GONE);
         noResultTextView.setVisibility(View.VISIBLE);
+        emptyStub.setVisibility(View.GONE);
+    }
+    private void showEmptyStub() {
+        progressBar.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.GONE);
+        noResultTextView.setVisibility(View.GONE);
+        emptyStub.setVisibility(View.VISIBLE);
     }
 }

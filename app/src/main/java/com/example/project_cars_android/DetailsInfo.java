@@ -1,13 +1,19 @@
 package com.example.project_cars_android;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.GridLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.project_cars_android.fragments.PhotoViewerFragment;
@@ -33,8 +39,14 @@ import static com.example.project_cars_android.SearchActivity.API_KEY;
 public class DetailsInfo extends AppCompatActivity {
 
     ImageView detailsInfoImageView;
-    TextView carNameInfoTextView, cityInfo, mileAgeInfo, carType, engineInfo, gearboxInfo, detailsInfo, priceInfo, priceUahInfo;
+    TextView carNameInfoTextView, cityInfo, mileAgeInfo, carType, engineInfo, gearboxInfo, detailsInfo, priceInfo, priceUahInfo, photoCounter;
+    Button openRiaButton;
     Integer autoId;
+    CarsModel data;
+    ProgressBar progressBar;
+    LinearLayout emptyStub;
+    ScrollView contentScrollView;
+    GridLayout footerGridLayout;
 
     ArrayList<CarsModel> photoDataArray;
 
@@ -53,8 +65,14 @@ public class DetailsInfo extends AppCompatActivity {
         detailsInfo = findViewById(R.id.detailsInfo);
         priceInfo = findViewById(R.id.priceInfo);
         priceUahInfo = findViewById(R.id.priceUahInfo);
+        openRiaButton = findViewById(R.id.openRiaButton);
+        photoCounter = findViewById(R.id.photoCountTextView);
+        progressBar = findViewById(R.id.progressBar);
+        emptyStub = findViewById(R.id.emptyStab);
+        contentScrollView = findViewById(R.id.contentScrollView);
+        footerGridLayout = findViewById(R.id.footer);
 
-        CarsModel data = (CarsModel) getIntent().getSerializableExtra("details");
+        data = (CarsModel) getIntent().getSerializableExtra("details");
 
         autoId = data.getId();
         Picasso.get().load(data.getPhotoData()).into(detailsInfoImageView);
@@ -64,9 +82,22 @@ public class DetailsInfo extends AppCompatActivity {
         carType.setText(data.getSubCategoryNameEng());
         engineInfo.setText(data.getEngine());
         gearboxInfo.setText(data.getGearbox());
-        detailsInfo.setText(data.getDescription());
+        if (data.getDescription().equals("")){
+            detailsInfo.setText("Описание отсутствует.");
+        } else {
+            detailsInfo.setText(data.getDescription());
+        }
         priceInfo.setText(data.getPrice() + " $");
         priceUahInfo.setText(data.getPriceUah() + " грн.");
+        photoCounter.setText(data.getCount() + " фото");
+
+        emptyStub.findViewById(R.id.emptyStubButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showProgressBar();
+                fetchPhotoData();
+            }
+        });
 
         fetchPhotoData();
     }
@@ -99,6 +130,7 @@ public class DetailsInfo extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
+                    showContent();
                     JSONObject photoData = new JSONObject(response.body().string()).getJSONObject("data").getJSONObject(String.valueOf(autoId));
                     for (Iterator<String> iterator = photoData.keys(); iterator.hasNext();) {
                         String key = iterator.next();
@@ -117,8 +149,31 @@ public class DetailsInfo extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                showEmptyStub();
             }
         });
+    }
+
+    public void openRiaOnClick(View view) {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://auto.ria.com" + data.getAutoLink())));
+    }
+    private void showProgressBar() {
+        progressBar.setVisibility(View.VISIBLE);
+        contentScrollView.setVisibility(View.GONE);
+        footerGridLayout.setVisibility(View.GONE);
+        emptyStub.setVisibility(View.GONE);
+    }
+    private void showContent() {
+        progressBar.setVisibility(View.GONE);
+        contentScrollView.setVisibility(View.VISIBLE);
+        footerGridLayout.setVisibility(View.VISIBLE);
+        emptyStub.setVisibility(View.GONE);
+
+    }
+    private void showEmptyStub() {
+        progressBar.setVisibility(View.GONE);
+        contentScrollView.setVisibility(View.GONE);
+        footerGridLayout.setVisibility(View.GONE);
+        emptyStub.setVisibility(View.VISIBLE);
     }
 }

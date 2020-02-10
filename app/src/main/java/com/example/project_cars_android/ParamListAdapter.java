@@ -5,16 +5,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.project_cars_android.models.CarsModel;
+import com.example.project_cars_android.models.Bodystyle;
+import com.example.project_cars_android.models.City;
+import com.example.project_cars_android.models.FuelType;
+import com.example.project_cars_android.models.Gearbox;
+import com.example.project_cars_android.models.Mark;
+import com.example.project_cars_android.models.Model;
+import com.example.project_cars_android.models.ParamDataset;
+import com.example.project_cars_android.models.State;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class ParamListAdapter extends RecyclerView.Adapter<ParamListAdapter.ParamListViewHolder> {
 
-    ArrayList<CarsModel> mDataset;
-    public CarsModel params;
+    private List mDataset;
 
-    boolean isBodystyle, isModel, isCity, isMark, isState, isGearbox, isFuelType;
+    private boolean isBodystyle, isModel, isCity, isMark, isState, isGearbox, isFuelType;
 
     public static class ParamListViewHolder extends RecyclerView.ViewHolder {
 
@@ -28,7 +34,7 @@ public class ParamListAdapter extends RecyclerView.Adapter<ParamListAdapter.Para
         }
     }
 
-    public ParamListAdapter(ArrayList<CarsModel> myDataset, boolean isBodystyle, boolean isMark, boolean isModel, boolean isState, boolean isCity, boolean isGearbox, boolean isFuelType) {
+    public ParamListAdapter(List myDataset, boolean isBodystyle, boolean isMark, boolean isModel, boolean isState, boolean isCity, boolean isGearbox, boolean isFuelType) {
         mDataset = myDataset;
         this.isBodystyle = isBodystyle;
         this.isMark = isMark;
@@ -52,24 +58,27 @@ public class ParamListAdapter extends RecyclerView.Adapter<ParamListAdapter.Para
             holder.paramTextView.setText("Все");
             return;
         }
-        params = mDataset.get(position - 1);
         if (isBodystyle) {
-            holder.paramTextView.setText(params.getParamBodystyleName());
+            holder.paramTextView.setText(((Bodystyle) mDataset.get(position - 1)).getParamBodystyleName());
         } else if (isMark){
-            holder.paramTextView.setText(params.getParamMarkName());
+            holder.paramTextView.setText(((Mark) mDataset.get(position - 1)).getParamMarkName());
         } else if (isState) {
-            holder.paramTextView.setText(params.getParamStateName());
+            State param = (State) mDataset.get(position - 1);
+            holder.paramTextView.setText(param.getParamStateName());
         } else if (isModel) {
-            holder.paramTextView.setText(params.getParamModelName());
+            Model param = (Model) mDataset.get(position - 1);
+            holder.paramTextView.setText(param.getParamModelName());
         } else if (isCity) {
-            holder.paramTextView.setText(params.getParamCityName());
+            City param = (City) mDataset.get(position - 1);
+            holder.paramTextView.setText(param.getParamCityName());
         } else if (isGearbox) {
-            holder.paramTextView.setText(params.getParamGearboxName());
+            Gearbox param = (Gearbox) mDataset.get(position - 1);
+            holder.paramTextView.setText(param.getParamGearboxName());
         } else if (isFuelType) {
-            holder.paramTextView.setText(params.getParamFuelTypeName());
+            FuelType param = (FuelType) mDataset.get(position - 1);
+            holder.paramTextView.setText(param.getParamFuelTypeName());
         }
     }
-
     @Override
     public int getItemViewType(int position) {
         return isHeader(position) ? 0 : 1;

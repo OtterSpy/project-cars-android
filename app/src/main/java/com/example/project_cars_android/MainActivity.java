@@ -1,23 +1,37 @@
 package com.example.project_cars_android;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.example.project_cars_android.models.CarsModel;
+import com.example.project_cars_android.models.Bodystyle;
+import com.example.project_cars_android.models.City;
+import com.example.project_cars_android.models.FuelType;
+import com.example.project_cars_android.models.Gearbox;
+import com.example.project_cars_android.models.Mark;
+import com.example.project_cars_android.models.Model;
+import com.example.project_cars_android.models.State;
 import com.example.project_cars_android.networking.ApiManager;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.Serializable;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -29,13 +43,14 @@ import static com.example.project_cars_android.SearchActivity.API_KEY;
 public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = "KEK";
-    ArrayList<CarsModel> paramBodystyleArrayList;
-    ArrayList<CarsModel> paramMarkArrayList;
-    ArrayList<CarsModel> paramModelArrayList;
-    ArrayList<CarsModel> paramStatesArrayList;
-    ArrayList<CarsModel> paramCityArrayList;
-    ArrayList<CarsModel> paramGearboxArrayList;
-    ArrayList<CarsModel> paramFuelTypeArrayList;
+    List<Bodystyle> paramBodystyleArrayList;
+    List<Mark> paramMarkArrayList;
+    List<Model> paramModelArrayList;
+    List<State> paramStatesArrayList;
+    List<City> paramCityArrayList;
+    List<Gearbox> paramGearboxArrayList;
+    List<FuelType> paramFuelTypeArrayList;
+    JSONArray bodystyleObject;
 
     Integer paramBodystyleId;
     Integer paramMarkId;
@@ -54,6 +69,10 @@ public class MainActivity extends AppCompatActivity {
     Float engineTo;
     Integer currency;
 
+    LinearLayout contentLinearLayout;
+    LinearLayout emptyStub;
+    ProgressBar progressBar;
+
     Button bodystyleButton;
     Button markButton;
     Button modelButton;
@@ -61,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
     Button cityButton;
     Button gearboxButton;
     Button fuelTypeButton;
+
 
     EditText priceFromEditText, priceToEditText;
     EditText yearFromEditText, yearToEditText;
@@ -88,34 +108,54 @@ public class MainActivity extends AppCompatActivity {
         engineFromEditText = findViewById(R.id.engineFromEditText);
         engineToEditText = findViewById(R.id.engineToEditText);
 
+        contentLinearLayout = findViewById(R.id.contentLinearLayout);
+        progressBar = findViewById(R.id.progressBar);
+        emptyStub = findViewById(R.id.emptyStab);
+
+        emptyStub.findViewById(R.id.emptyStubButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showProgressBar();
+
+                fetchBodystyleIdList();
+                fetchMarkIdList();
+                fetchStatesIdList();
+                fetchGearboxIdList();
+                fetchFuelTypeIdList();
+            }
+        });
+
         paramMarkId = 0;
         paramStateId = 0;
 
         currency = 1;
+
+        showProgressBar();
 
         fetchBodystyleIdList();
         fetchMarkIdList();
         fetchStatesIdList();
         fetchGearboxIdList();
         fetchFuelTypeIdList();
-
-//        Log.d(TAG, "onCreate: " + priceFromEditText.getText());
     }
     private void fetchBodystyleIdList() {
         paramBodystyleArrayList = new ArrayList<>();
-        final Call<ResponseBody> bodystyleCall = ApiManager.getInstance().searchBodystyle(API_KEY);
+            final Call<ResponseBody> bodystyleCall = ApiManager.getInstance().searchBodystyle(API_KEY);
             bodystyleCall.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     try {
-                        JSONArray bodystyleObject = new JSONArray(response.body().string());
+                        showContent();
+                        bodystyleObject = new JSONArray(response.body().string());
                         for (int i = 0; i < bodystyleObject.length(); i++) {
                             JSONObject tmpBodystyleObject = bodystyleObject.getJSONObject(i);
-                            CarsModel bodystyleParams = new CarsModel();
-                            bodystyleParams.setParamBodystyleName(tmpBodystyleObject.getString("name"));
-                            bodystyleParams.setBodystyleId(tmpBodystyleObject.getInt("value"));
-                            paramBodystyleArrayList.add(bodystyleParams);
+                            Bodystyle model = new Bodystyle();
+                            model.setBodystyleId(tmpBodystyleObject.getInt("value"));
+                            model.setParamBodystyleName(tmpBodystyleObject.getString("name"));
+                            paramBodystyleArrayList.add(model);
                         }
+                        Log.d(TAG, "fetchBodystyleIdList: " + paramBodystyleArrayList);
+                        saveData(paramBodystyleArrayList, "bodystyle");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
@@ -125,25 +165,27 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                    showEmptyStub();
                 }
             });
     }
     private void fetchMarkIdList() {
         paramMarkArrayList = new ArrayList<>();
-        Call<ResponseBody> markCall = ApiManager.getInstance().searchMarks(API_KEY);
+        final Call<ResponseBody> markCall = ApiManager.getInstance().searchMarks(API_KEY);
             markCall.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     try {
-                        JSONArray object = new JSONArray(response.body().string());
-                        for (int i = 0; i < object.length(); i++) {
-                            JSONObject tmpObj = object.getJSONObject(i);
-                            CarsModel params = new CarsModel();
-                            params.setParamMarkName(tmpObj.getString("name"));
-                            params.setMarkId(tmpObj.getInt("value"));
-                            paramMarkArrayList.add(params);
+                        showContent();
+                        bodystyleObject = new JSONArray(response.body().string());
+                        for (int i = 0; i < bodystyleObject.length(); i++) {
+                            JSONObject tmpObj = bodystyleObject.getJSONObject(i);
+                            Mark model = new Mark();
+                            model.setParamMarkName(tmpObj.getString("name"));
+                            model.setMarkId(tmpObj.getInt("value"));
+                            paramMarkArrayList.add(model);
                         }
+                        saveData(paramMarkArrayList, "mark");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
@@ -166,10 +208,10 @@ public class MainActivity extends AppCompatActivity {
                         JSONArray object = new JSONArray(response.body().string());
                         for (int i = 0; i < object.length(); i++) {
                             JSONObject tmpObj = object.getJSONObject(i);
-                            CarsModel modelParams = new CarsModel();
-                            modelParams.setParamModelName(tmpObj.getString("name"));
-                            modelParams.setModelId(tmpObj.getInt("value"));
-                            paramModelArrayList.add(modelParams);
+                            Model model = new Model();
+                            model.setParamModelName(tmpObj.getString("name"));
+                            model.setModelId(tmpObj.getInt("value"));
+                            paramModelArrayList.add(model);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -180,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                    showEmptyStub();
                 }
             });
         }
@@ -192,13 +234,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
+                    showContent();
                     JSONArray statesObject = new JSONArray(response.body().string());
                     for (int i = 0; i < statesObject.length(); i++) {
                         JSONObject tmpStateObject = statesObject.getJSONObject(i);
-                        CarsModel stateParams = new CarsModel();
-                        stateParams.setParamStateName(tmpStateObject.getString("name"));
-                        stateParams.setStateId(tmpStateObject.getInt("value"));
-                        paramStatesArrayList.add(stateParams);
+                        State model = new State();
+                        model.setParamStateName(tmpStateObject.getString("name"));
+                        model.setStateId(tmpStateObject.getInt("value"));
+                        paramStatesArrayList.add(model);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -209,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                showEmptyStub();
             }
         });
     }
@@ -223,10 +266,10 @@ public class MainActivity extends AppCompatActivity {
                     JSONArray cityObject = new JSONArray(response.body().string());
                     for (int i = 0; i < cityObject.length(); i++) {
                         JSONObject tmpCityObject = cityObject.getJSONObject(i);
-                        CarsModel cityParams = new CarsModel();
-                        cityParams.setParamCityName(tmpCityObject.getString("name"));
-                        cityParams.setCityId(tmpCityObject.getInt("value"));
-                        paramCityArrayList.add(cityParams);
+                        City model = new City();
+                        model.setParamCityName(tmpCityObject.getString("name"));
+                        model.setCityId(tmpCityObject.getInt("value"));
+                        paramCityArrayList.add(model);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -237,7 +280,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                showEmptyStub();
             }
         });
     }
@@ -248,13 +291,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
+                    showContent();
                     JSONArray gearboxArray = new JSONArray(response.body().string());
                     for (int i = 0; i < gearboxArray.length(); i++) {
                         JSONObject gearboxObject = gearboxArray.getJSONObject(i);
-                        CarsModel gearboxParams = new CarsModel();
-                        gearboxParams.setParamGearboxName(gearboxObject.getString("name"));
-                        gearboxParams.setGearboxId(gearboxObject.getInt("value"));
-                        paramGearboxArrayList.add(gearboxParams);
+                        Gearbox model = new Gearbox();
+                        model.setParamGearboxName(gearboxObject.getString("name"));
+                        model.setGearboxId(gearboxObject.getInt("value"));
+                        paramGearboxArrayList.add(model);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -264,7 +308,7 @@ public class MainActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                showEmptyStub();
             }
         });
     }
@@ -275,13 +319,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
+                    showContent();
                     JSONArray fuelTypeArray = new JSONArray(response.body().string());
                     for (int i = 0; i < fuelTypeArray.length(); i++) {
                         JSONObject fuelTypeObject = fuelTypeArray.getJSONObject(i);
-                        CarsModel fuelTypeParams = new CarsModel();
-                        fuelTypeParams.setParamFuelTypeName(fuelTypeObject.getString("name"));
-                        fuelTypeParams.setFuelTypeId(fuelTypeObject.getInt("value"));
-                        paramFuelTypeArrayList.add(fuelTypeParams);
+                        FuelType model = new FuelType();
+                        model.setParamFuelTypeName(fuelTypeObject.getString("name"));
+                        model.setFuelTypeId(fuelTypeObject.getInt("value"));
+                        paramFuelTypeArrayList.add(model);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -291,18 +336,19 @@ public class MainActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                showEmptyStub();
             }
         });
     }
     public void bodystyleClick(View view) {
         Intent intent = new Intent(MainActivity.this, ParamListActivity.class);
-        intent.putExtra("bodystyles", paramBodystyleArrayList);
+        intent.putExtra("bodystyles", (Serializable) paramBodystyleArrayList);
         startActivityForResult(intent, 0);
+        Log.d(TAG, "bodystyleClick: " + paramBodystyleArrayList);
     }
     public void marksClick(View view) {
             Intent intent = new Intent(MainActivity.this, ParamListActivity.class);
-            intent.putExtra("marks", paramMarkArrayList);
+            intent.putExtra("marks", (Serializable) paramMarkArrayList);
             startActivityForResult(intent, 1);
             Log.d(TAG, "marksClick: " + paramMarkArrayList);
     }
@@ -311,13 +357,13 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Select Mark", Toast.LENGTH_SHORT).show();
         } else {
             Intent intent = new Intent(MainActivity.this, ParamListActivity.class);
-            intent.putExtra("models", paramModelArrayList);
+            intent.putExtra("models", (Serializable) paramModelArrayList);
             startActivityForResult(intent, 2);
         }
     }
     public void statesClick(View view) {
         Intent intent = new Intent(MainActivity.this, ParamListActivity.class);
-        intent.putExtra("states", paramStatesArrayList);
+        intent.putExtra("states", (Serializable) paramStatesArrayList);
         startActivityForResult(intent, 3);
         Log.d(TAG, "statesClick: " + paramStatesArrayList);
     }
@@ -326,18 +372,18 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Select State", Toast.LENGTH_SHORT).show();
         } else {
             Intent intent = new Intent(MainActivity.this, ParamListActivity.class);
-            intent.putExtra("cities", paramCityArrayList);
+            intent.putExtra("cities", (Serializable) paramCityArrayList);
             startActivityForResult(intent, 4);
         }
     }
     public void gearboxesClick(View view) {
         Intent intent = new Intent(MainActivity.this, ParamListActivity.class);
-        intent.putExtra("gearboxes", paramGearboxArrayList);
+        intent.putExtra("gearboxes", (Serializable) paramGearboxArrayList);
         startActivityForResult(intent, 5);
     }
     public void fuelTypeClick(View view) {
        Intent intent = new Intent(MainActivity.this, ParamListActivity.class);
-       intent.putExtra("fuelTypes", paramFuelTypeArrayList);
+       intent.putExtra("fuelTypes", (Serializable) paramFuelTypeArrayList);
        startActivityForResult(intent, 6);
     }
     public void searchClick(View view) {
@@ -453,11 +499,60 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+    private void saveData(List list, String name) {
+        SharedPreferences sharedPreferences = getSharedPreferences("sPref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(list);
+        editor.putString(name, json);
+        editor.apply();
 
+        Log.d(TAG, "saveData: " + " " + name + " " + list);
+    }
+    private List loadData(String name) {
+        SharedPreferences sharedPreferences = getSharedPreferences("sPref", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString(name, null);
+        Type type = new TypeToken<List>(){}.getType();
+        List list = gson.fromJson(json, type);
+        if (list == null) {
+            list = new ArrayList<>();
+        }
+        Log.d(TAG, "loadData: " + " " + name + " " + list);
+        return list;
+    }
     @Override
     protected void onResume() {
         super.onResume();
         fetchModelIdList();
         fetchCityIdList();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (paramBodystyleArrayList.size() != 0) {
+            saveData(paramBodystyleArrayList, "bodystyle");
+        }
+        if (paramMarkArrayList.size() != 0){
+            saveData(paramMarkArrayList, "mark");
+        }
+        Log.d(TAG, "onDestroy: ");
+    }
+    private void showProgressBar() {
+        progressBar.setVisibility(View.VISIBLE);
+        contentLinearLayout.setVisibility(View.GONE);
+        emptyStub.setVisibility(View.GONE);
+    }
+    private void showContent() {
+        progressBar.setVisibility(View.GONE);
+        contentLinearLayout.setVisibility(View.VISIBLE);
+        emptyStub.setVisibility(View.GONE);
+
+    }
+    private void showEmptyStub() {
+        progressBar.setVisibility(View.GONE);
+        contentLinearLayout.setVisibility(View.GONE);
+        emptyStub.setVisibility(View.VISIBLE);
     }
 }
