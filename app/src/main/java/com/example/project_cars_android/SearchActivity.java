@@ -30,7 +30,6 @@ public class SearchActivity extends AppCompatActivity {
 
     final static String API_KEY = "LV8tpree68pj0YpN5NfcXGFXkKcEWGUyxfJQYH5C";
     final static String TAG = "KEK";
-    private EndlessRecyclerViewScrollListener scrollListener;
     int pageNum;
 
     RecyclerView recyclerView;
@@ -110,7 +109,7 @@ public class SearchActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(mAdapter);
 
-        scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+        EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 pageNum = page;
@@ -128,16 +127,20 @@ public class SearchActivity extends AppCompatActivity {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     showRecyclerView();
-                    JSONObject object = new JSONObject(response.body().string());
-                    JSONObject results = object.getJSONObject("result").getJSONObject("search_result");
-                    JSONArray ids = results.getJSONArray("ids");
-                    if (results.getInt("count") == 0) {
-                        showNoResultTextView();
-                    } else {
-                        for (int i = 0; i < ids.length(); i++) {
-                            int dataObj = ids.getInt(i);
-                            carList.add(dataObj);
+                    if (response.body() != null) {
+                        JSONObject object = new JSONObject(response.body().string());
+                        JSONObject results = object.getJSONObject("result").getJSONObject("search_result");
+                        JSONArray ids = results.getJSONArray("ids");
+                        if (results.getInt("count") == 0) {
+                            showNoResultTextView();
+                        } else {
+                            for (int i = 0; i < ids.length(); i++) {
+                                int dataObj = ids.getInt(i);
+                                carList.add(dataObj);
+                            }
                         }
+                    } else {
+                        showEmptyStub();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -151,32 +154,37 @@ public class SearchActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                             try {
-                                JSONObject object = new JSONObject(response.body().string());
-                                JSONObject autoData = object.getJSONObject("autoData");
-                                JSONObject imageData = object.getJSONObject("photoData");
-                                JSONObject stateData = object.getJSONObject("stateData");
+                                if (response.body() != null) {
 
-                                CarsModel carsModel = new CarsModel();
+                                    JSONObject object = new JSONObject(response.body().string());
+                                    JSONObject autoData = object.getJSONObject("autoData");
+                                    JSONObject imageData = object.getJSONObject("photoData");
+                                    JSONObject stateData = object.getJSONObject("stateData");
 
-                                carsModel.setId(autoData.getInt("autoId"));
-                                carsModel.setPhotoData(imageData.getString("seoLinkF"));
-                                carsModel.setMarkName(object.getString("markName"));
-                                carsModel.setModelName(object.getString("modelName"));
-                                carsModel.setEngine(autoData.getString("fuelName"));
-                                carsModel.setGearbox(autoData.getString("gearboxName"));
-                                carsModel.setYear(autoData.getString("year"));
-                                carsModel.setPrice(object.getString("USD"));
-                                carsModel.setPriceUah(object.getString("UAH"));
-                                carsModel.setMileage(autoData.getString("race"));
-                                carsModel.setCity(object.getString("locationCityName"));
-                                carsModel.setRegionName(stateData.getString("regionName"));
-                                carsModel.setSubCategoryNameEng(autoData.getString("subCategoryNameEng"));
-                                carsModel.setDescription(autoData.getString("description"));
-                                carsModel.setAutoLink(object.getString("linkToView"));
-                                carsModel.setCount(imageData.getInt("count"));
+                                    CarsModel carsModel = new CarsModel();
 
-                                carInfoList.add(carsModel);
-                                mAdapter.notifyDataSetChanged();
+                                    carsModel.setId(autoData.getInt("autoId"));
+                                    carsModel.setPhotoData(imageData.getString("seoLinkF"));
+                                    carsModel.setMarkName(object.getString("markName"));
+                                    carsModel.setModelName(object.getString("modelName"));
+                                    carsModel.setEngine(autoData.getString("fuelName"));
+                                    carsModel.setGearbox(autoData.getString("gearboxName"));
+                                    carsModel.setYear(autoData.getString("year"));
+                                    carsModel.setPrice(object.getString("USD"));
+                                    carsModel.setPriceUah(object.getString("UAH"));
+                                    carsModel.setMileage(autoData.getString("race"));
+                                    carsModel.setCity(object.getString("locationCityName"));
+                                    carsModel.setRegionName(stateData.getString("regionName"));
+                                    carsModel.setSubCategoryNameEng(autoData.getString("subCategoryNameEng"));
+                                    carsModel.setDescription(autoData.getString("description"));
+                                    carsModel.setAutoLink(object.getString("linkToView"));
+                                    carsModel.setCount(imageData.getInt("count"));
+
+                                    carInfoList.add(carsModel);
+                                    mAdapter.notifyDataSetChanged();
+                                } else {
+                                    showEmptyStub();
+                                }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             } catch (IOException e) {
@@ -185,7 +193,7 @@ public class SearchActivity extends AppCompatActivity {
                         }
                         @Override
                         public void onFailure(Call<ResponseBody> call, Throwable t) {
-                            Log.d(TAG, "onFailure:");
+                            showEmptyStub();
                         }
                     });
                 }

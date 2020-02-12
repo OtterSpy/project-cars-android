@@ -4,4 +4,44 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="sedan">Седан</string>
+    <string name="offroad">Внедорожник / Кроссовер</string>
+    <string name="minivan">Минивэн</string>
+    <string name="khetchbek">Хэтчбэк</string>
+    <string name="universal">Универсал</string>
+    <string name="coupe">Купе</string>
+    <string name="to_1_5t">Легковой фургон (до 1,5т)</string>
+    <string name="cabriolet">Кабриолет</string>
+    <string name="pickup">Пикап</string>
+    <string name="liftback">Лифтбек</string>
+    <string name="limo">Лимузин</string>
+    <string name="other">Другой</string>
+    <string name="roadster">Роадстер</string>
+    <string name="all_param">Все</string>
+
+    <string name="mileage">Пробег:</string>
+    <string name="description">Описание:</string>
+    <string name="bodystyle">Тип кузова:</string>
+    <string name="mark">Марка:</string>
+    <string name="model">Модель:</string>
+    <string name="state">Область:</string>
+    <string name="city">Город:</string>
+    <string name="engine">Двигатель:</string>
+    <string name="gearbox">Коробка передач:</string>
+    <string name="fuel_type">Тип топлива:</string>
+    <string name="price_USD">Цена: $</string>
+    <string name="from">от:</string>
+    <string name="to">до:</string>
+    <string name="select_mileage">Пробег: км</string>
+    <string name="select_engine">Объём двигателя: л</string>
+    <string name="year_of_issue">Год выпуска:</string>
+    <string name="search">Поиск</string>
+    <string name="open_in_ria">Открыть на RIA.com</string>
+
+    <string name="reload">Обновить</string>
+    <string name="error_load">Ошибка загрузки</string>
+    <string name="select_mark">Выберите марку</string>
+    <string name="select_state">Выберите область</string>
+
+    <string name="notRestult">Нет результатов по данному запросу</string>
 </resources>

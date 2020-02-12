@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -91,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         bodystyleButton = findViewById(R.id.buttonSelectBodystyle);
         markButton = findViewById(R.id.buttonSelectMark);
         modelButton = findViewById(R.id.buttonSelectModel);
@@ -347,14 +350,14 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "bodystyleClick: " + paramBodystyleArrayList);
     }
     public void marksClick(View view) {
-            Intent intent = new Intent(MainActivity.this, ParamListActivity.class);
-            intent.putExtra("marks", (Serializable) paramMarkArrayList);
-            startActivityForResult(intent, 1);
-            Log.d(TAG, "marksClick: " + paramMarkArrayList);
+        Intent intent = new Intent(MainActivity.this, ParamListActivity.class);
+        intent.putExtra("marks", (Serializable) paramMarkArrayList);
+        startActivityForResult(intent, 1);
+        Log.d(TAG, "marksClick: " + paramMarkArrayList);
     }
     public void modelsClick(View view) {
         if (paramMarkId == 0) {
-            Toast.makeText(this, "Select Mark", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.select_mark), Toast.LENGTH_SHORT).show();
         } else {
             Intent intent = new Intent(MainActivity.this, ParamListActivity.class);
             intent.putExtra("models", (Serializable) paramModelArrayList);
@@ -369,7 +372,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public void citiesClick(View view) {
         if (paramStateId == 0) {
-            Toast.makeText(this, "Select State", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.select_state), Toast.LENGTH_SHORT).show();
         } else {
             Intent intent = new Intent(MainActivity.this, ParamListActivity.class);
             intent.putExtra("cities", (Serializable) paramCityArrayList);
@@ -477,23 +480,19 @@ public class MainActivity extends AppCompatActivity {
             }
         } else if (requestCode == 4) {
             if (resultCode == RESULT_OK) {
-
-                int cityId = data.getIntExtra("cityId", 0);
-                paramCityId = cityId;
+                paramCityId = data.getIntExtra("cityId", 0);
                 String city = data.getStringExtra("city");
                 cityButton.setText(city);
             }
         } else if (requestCode == 5) {
             if (resultCode == RESULT_OK) {
-                int gearboxId = data.getIntExtra("gearboxId", 0);
-                paramGearboxId = gearboxId;
+                paramGearboxId = data.getIntExtra("gearboxId", 0);
                 String gearbox = data.getStringExtra("gearbox");
                 gearboxButton.setText(gearbox);
             }
         } else if (requestCode == 6) {
             if (resultCode == RESULT_OK) {
-                int fuelTypeId = data.getIntExtra("fuelTypeId", 0);
-                paramFuelTypeId = fuelTypeId;
+                paramFuelTypeId = data.getIntExtra("fuelTypeId", 0);
                 String fuelType = data.getStringExtra("fuelType");
                 fuelTypeButton.setText(fuelType);
             }
@@ -524,8 +523,36 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        markButton.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                modelButton.setText(getResources().getString(R.string.all_param));
+                paramModelId = 0;
+            }
+        });
+        stateButton.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                cityButton.setText(getResources().getString(R.string.all_param));
+                paramCityId = 0;
+            }
+        });
         fetchModelIdList();
         fetchCityIdList();
+
+        Log.d(TAG, "onResume: ");
     }
 
     @Override

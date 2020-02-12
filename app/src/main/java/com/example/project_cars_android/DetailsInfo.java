@@ -1,5 +1,6 @@
 package com.example.project_cars_android;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.project_cars_android.fragments.PhotoViewerFragment;
 import com.example.project_cars_android.models.CarsModel;
@@ -50,6 +52,7 @@ public class DetailsInfo extends AppCompatActivity {
 
     ArrayList<CarsModel> photoDataArray;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,10 +79,36 @@ public class DetailsInfo extends AppCompatActivity {
 
         autoId = data.getId();
         Picasso.get().load(data.getPhotoData()).into(detailsInfoImageView);
-        carNameInfoTextView.setText(data.getMarkName() + " " + data.getModelName());
+        carNameInfoTextView.setText(data.getMarkName() + " " + data.getModelName() + " | " + data.getYear() + " год.");
         cityInfo.setText(data.getCity() + ", " + data.getRegionName() + " обл.");
-        mileAgeInfo.setText(data.getMileage() + " пробег");
-        carType.setText(data.getSubCategoryNameEng());
+        mileAgeInfo.setText(data.getMileage());
+        if (data.getSubCategoryNameEng().equals("sedan")){
+            carType.setText(getResources().getString(R.string.sedan));
+        } else if(data.getSubCategoryNameEng().equals("vnedorozhnik-krossover")) {
+            carType.setText(getResources().getString(R.string.offroad));
+        } else if (data.getSubCategoryNameEng().equals("miniven")) {
+            carType.setText(getResources().getString(R.string.minivan));
+        } else if (data.getSubCategoryNameEng().equals("khetchbek")) {
+            carType.setText(getResources().getString(R.string.khetchbek));
+        } else if (data.getSubCategoryNameEng().equals("universal")) {
+            carType.setText(getResources().getString(R.string.universal));
+        } else if (data.getSubCategoryNameEng().equals("kupe")) {
+            carType.setText(getResources().getString(R.string.coupe));
+        } else if (data.getSubCategoryNameEng().equals("legkovoj-furgon-do-1-5-t")) {
+            carType.setText(getResources().getString(R.string.to_1_5t));
+        } else if (data.getSubCategoryNameEng().equals("kabriolet")) {
+            carType.setText(getResources().getString(R.string.cabriolet));
+        } else if (data.getSubCategoryNameEng().equals("pikap")) {
+            carType.setText(getResources().getString(R.string.pickup));
+        } else if (data.getSubCategoryNameEng().equals("liftbek")) {
+            carType.setText(getResources().getString(R.string.liftback));
+        } else if (data.getSubCategoryNameEng().equals("limuzin")) {
+            carType.setText(getResources().getString(R.string.limo));
+        } else if (data.getSubCategoryNameEng().equals("drugoj")) {
+            carType.setText(getResources().getString(R.string.other));
+        } else if (data.getSubCategoryNameEng().equals("rodster")) {
+            carType.setText(getResources().getString(R.string.roadster));
+        }
         engineInfo.setText(data.getEngine());
         gearboxInfo.setText(data.getGearbox());
         if (data.getDescription().equals("")){
@@ -103,24 +132,26 @@ public class DetailsInfo extends AppCompatActivity {
     }
 
     public void photoViewerOnClick(View view) {
-        Fragment photoViewerFragment = null;
-        try {
-            photoViewerFragment = PhotoViewerFragment.class.newInstance();
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("photoData", photoDataArray);
-            photoViewerFragment.setArguments(bundle);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
+        if (data.getCount() == 0) {
+            Toast.makeText(this, "На данном объявлении нет фото", Toast.LENGTH_SHORT).show();
+        } else {
+            Fragment photoViewerFragment = null;
+            try {
+                photoViewerFragment = PhotoViewerFragment.class.newInstance();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("photoData", photoDataArray);
+                photoViewerFragment.setArguments(bundle);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            }
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
+            fragmentTransaction.add(R.id.detailsInfoContainer, photoViewerFragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
         }
-
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
-        fragmentTransaction.add(R.id.detailsInfoContainer, photoViewerFragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
-
     }
 
     private void fetchPhotoData() {

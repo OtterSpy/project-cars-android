@@ -5,87 +5,87 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:descendantFocusability="beforeDescendants"
+        android:focusableInTouchMode="true">
         <LinearLayout
             android:id="@+id/contentLinearLayout"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:textSize="17dp"
-                android:text="Тип кузова:"/>
+                android:textSize="17sp"
+                android:text="@string/bodystyle"/>
             <Button
                 android:id="@+id/buttonSelectBodystyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:paddingStart="15dp"
-                android:text="Bodystyle"
+                android:text="@string/all_param"
                 android:onClick="bodystyleClick"
                 android:textAlignment="viewStart"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:textSize="17dp"
-                android:text="Выберите марку:"/>
+                android:textSize="17sp"
+                android:text="@string/mark"/>
             <Button
                 android:id="@+id/buttonSelectMark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:paddingStart="15dp"
-                android:text="Mark"
+                android:text="@string/all_param"
                 android:onClick="marksClick"
                 android:textAlignment="viewStart"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:textSize="17dp"
-                android:text="Выберите модель:"/>
+                android:textSize="17sp"
+                android:text="@string/model"/>
             <Button
                 android:id="@+id/buttonSelectModel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:paddingStart="15dp"
-                android:text="model"
+                android:text="@string/all_param"
                 android:onClick="modelsClick"
                 android:textAlignment="viewStart"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:textSize="17dp"
-                android:text="Выберите область:"/>
+                android:textSize="17sp"
+                android:text="@string/state"/>
             <Button
                 android:id="@+id/buttonSelectStates"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:paddingStart="15dp"
-                android:text="State"
+                android:text="@string/all_param"
                 android:onClick="statesClick"
                 android:textAlignment="viewStart"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:textSize="17dp"
-                android:text="Выберите город:"/>
+                android:textSize="17sp"
+                android:text="@string/city"/>
             <Button
                 android:id="@+id/buttonSelectCity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:paddingStart="15dp"
-                android:text="City"
+                android:text="@string/all_param"
                 android:onClick="citiesClick"
                 android:textAlignment="viewStart"/>
             <GridLayout
@@ -98,11 +98,11 @@
                     android:layout_height="wrap_content"
                     android:layout_columnSpan="8"
                     android:padding="10dp"
-                    android:textSize="17dp"
-                    android:text="Цена: $"/>
+                    android:textSize="17sp"
+                    android:text="@string/price_USD"/>
                 <TextView
-                    android:text="от:"
-                    android:textSize="17dp"
+                    android:text="@string/from"
+                    android:textSize="17sp"
                     android:padding="10dp"
                     android:layout_columnWeight="0"/>
                 <EditText
@@ -114,8 +114,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <TextView
-                    android:text="до:"
-                    android:textSize="17dp"
+                    android:text="@string/to"
+                    android:textSize="17sp"
                     android:padding="10dp"
                     android:layout_columnWeight="0"/>
                 <EditText
@@ -139,11 +139,11 @@
                     android:layout_height="wrap_content"
                     android:layout_columnSpan="8"
                     android:padding="10dp"
-                    android:textSize="17dp"
-                    android:text="Год выпуска:"/>
+                    android:textSize="17sp"
+                    android:text="@string/year_of_issue"/>
                 <TextView
-                    android:text="от:"
-                    android:textSize="17dp"
+                    android:text="@string/from"
+                    android:textSize="17sp"
                     android:padding="10dp"
                     android:layout_columnWeight="0"/>
                 <EditText
@@ -155,8 +155,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <TextView
-                    android:text="до:"
-                    android:textSize="17dp"
+                    android:text="@string/to"
+                    android:textSize="17sp"
                     android:padding="10dp"
                     android:layout_columnWeight="0"/>
                 <EditText
@@ -180,11 +180,11 @@
                     android:layout_height="wrap_content"
                     android:layout_columnSpan="8"
                     android:padding="10dp"
-                    android:textSize="17dp"
-                    android:text="Пробег: км"/>
+                    android:textSize="17sp"
+                    android:text="@string/select_mileage"/>
                 <TextView
-                    android:text="от:"
-                    android:textSize="17dp"
+                    android:text="@string/from"
+                    android:textSize="17sp"
                     android:padding="10dp"
                     android:layout_columnWeight="0"/>
                 <EditText
@@ -196,8 +196,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <TextView
-                    android:text="до:"
-                    android:textSize="17dp"
+                    android:text="@string/to"
+                    android:textSize="17sp"
                     android:padding="10dp"
                     android:layout_columnWeight="0"/>
                 <EditText
@@ -215,30 +215,30 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:textSize="17dp"
-                android:text="Тип коробки:"/>
+                android:textSize="17sp"
+                android:text="@string/gearbox"/>
             <Button
                 android:id="@+id/buttonSelectGearbox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:paddingStart="15dp"
-                android:text="Gearbox"
+                android:text="@string/all_param"
                 android:onClick="gearboxesClick"
                 android:textAlignment="viewStart"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:textSize="17dp"
-                android:text="Тип топлива:"/>
+                android:textSize="17sp"
+                android:text="@string/fuel_type"/>
             <Button
                 android:id="@+id/buttonSelectFuelType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:paddingStart="15dp"
-                android:text="FuelType"
+                android:text="@string/all_param"
                 android:onClick="fuelTypeClick"
                 android:textAlignment="viewStart"/>
             <GridLayout
@@ -251,11 +251,11 @@
                     android:layout_height="wrap_content"
                     android:layout_columnSpan="8"
                     android:padding="10dp"
-                    android:textSize="17dp"
-                    android:text="Объём двигателя: л"/>
+                    android:textSize="17sp"
+                    android:text="@string/select_engine"/>
                 <TextView
-                    android:text="от:"
-                    android:textSize="17dp"
+                    android:text="@string/from"
+                    android:textSize="17sp"
                     android:padding="10dp"
                     android:layout_columnWeight="0"/>
                 <EditText
@@ -267,8 +267,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <TextView
-                    android:text="до:"
-                    android:textSize="17dp"
+                    android:text="@string/to"
+                    android:textSize="17sp"
                     android:padding="10dp"
                     android:layout_columnWeight="0"/>
                 <EditText
@@ -294,7 +294,7 @@
                 android:layout_marginHorizontal="10dp"
                 android:layout_marginBottom="10dp"
                 android:onClick="searchClick"
-                android:text="Search"/>
+                android:text="@string/search"/>
         </LinearLayout>
     </ScrollView>
     <ProgressBar

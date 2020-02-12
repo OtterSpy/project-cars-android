@@ -2,7 +2,6 @@ package com.example.project_cars_android;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,17 +13,16 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import static com.example.project_cars_android.MainActivity.TAG;
 
 public class PhotosListAdapter extends RecyclerView.Adapter<PhotosListAdapter.PhotosListViewHolder> {
 
-    ArrayList<CarsModel> mDataset;
+    private ArrayList<CarsModel> mDataset;
 
-    public static class PhotosListViewHolder extends  RecyclerView.ViewHolder {
+    static class PhotosListViewHolder extends  RecyclerView.ViewHolder {
 
         ImageView photoItemImageView;
 
-        public PhotosListViewHolder(final View itemView) {
+        PhotosListViewHolder(final View itemView) {
             super(itemView);
             photoItemImageView = itemView.findViewById(R.id.photoItemImageView);
         }
@@ -44,7 +42,6 @@ public class PhotosListAdapter extends RecyclerView.Adapter<PhotosListAdapter.Ph
     public void onBindViewHolder(final PhotosListAdapter.PhotosListViewHolder photosListViewHolder, final int i) {
         final CarsModel photoId = mDataset.get(i);
         Picasso.get().load(photoId.getPhotoUrl()).into(photosListViewHolder.photoItemImageView);
-        Log.d(TAG, "onBindViewHolder: " + photoId);
     }
 
     @Override
