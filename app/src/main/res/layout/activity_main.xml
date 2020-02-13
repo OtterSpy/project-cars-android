@@ -2,7 +2,6 @@
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <ScrollView
         android:layout_width="match_parent"
@@ -365,6 +364,7 @@
                 android:background="@drawable/param_button"
                 android:layout_marginHorizontal="10dp"
                 android:layout_marginBottom="10dp"
+                android:textSize="17sp"
                 android:onClick="searchClick"
                 android:text="@string/search"/>
         </LinearLayout>

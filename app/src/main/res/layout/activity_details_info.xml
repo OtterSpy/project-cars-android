@@ -26,7 +26,7 @@
             <TextView
                 android:id="@+id/photoCountTextView"
                 tool:text="photo"
-                android:background="#ccc"
+                android:background="@drawable/focused_param_button"
                 android:layout_marginTop="-270dp"
                 android:paddingHorizontal="7dp"
                 android:paddingVertical="2dp"
