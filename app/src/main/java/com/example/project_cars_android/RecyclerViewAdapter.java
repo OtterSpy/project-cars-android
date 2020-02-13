@@ -1,6 +1,8 @@
 package com.example.project_cars_android;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +16,7 @@ import java.util.ArrayList;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolder> {
 
-    public ArrayList<CarsModel> mDataset;
+    private ArrayList<CarsModel> mDataset;
 
     public static class RecyclerViewHolder extends RecyclerView.ViewHolder{
 
@@ -40,8 +42,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public RecyclerViewAdapter.RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_holder, parent, false);
-        RecyclerViewHolder viewHolder = new RecyclerViewHolder(view);
-        return viewHolder;
+        return new RecyclerViewHolder(view);
     }
 
     @Override
@@ -54,7 +55,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.carMileAgeTextView.setText(carID.getMileage() + " | г. " + carID.getCity());
         Picasso.get().load(carID.getPhotoData()).into(holder.carImageView);
     }
-
     @Override
     public int getItemCount() {
         return mDataset.size();

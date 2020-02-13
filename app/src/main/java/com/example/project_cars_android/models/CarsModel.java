@@ -8,8 +8,10 @@ public class CarsModel implements Serializable {
 
     int id;
     int count;
+    int adCounter;
 
-    String photoData;
+    private String photoData;
+
     String photoUrl;
     String engine;
     String gearbox;
@@ -24,6 +26,14 @@ public class CarsModel implements Serializable {
     String subCategoryNameEng;
     String description;
     String autoLink;
+
+    public int getAdCounter() {
+        return adCounter;
+    }
+
+    public void setAdCounter(int adCounter) {
+        this.adCounter = adCounter;
+    }
 
     public String getAutoLink() {
         return autoLink;

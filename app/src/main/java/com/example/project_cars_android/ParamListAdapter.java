@@ -19,6 +19,9 @@ import java.util.List;
 public class ParamListAdapter extends RecyclerView.Adapter<ParamListAdapter.ParamListViewHolder> {
 
     private List mDataset;
+    private static final int HEADER = 0;
+    private static final int CONTENT = 1;
+
 
     private boolean isBodystyle, isModel, isCity, isMark, isState, isGearbox, isFuelType;
 
@@ -81,10 +84,10 @@ public class ParamListAdapter extends RecyclerView.Adapter<ParamListAdapter.Para
     }
     @Override
     public int getItemViewType(int position) {
-        return isHeader(position) ? 0 : 1;
+        return isHeader(position) ? HEADER : CONTENT;
     }
 
-    public boolean isHeader (int position) {
+    private boolean isHeader(int position) {
         return position == 0;
     }
 

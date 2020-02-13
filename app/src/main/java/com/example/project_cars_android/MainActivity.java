@@ -149,16 +149,20 @@ public class MainActivity extends AppCompatActivity {
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     try {
                         showContent();
-                        bodystyleObject = new JSONArray(response.body().string());
-                        for (int i = 0; i < bodystyleObject.length(); i++) {
-                            JSONObject tmpBodystyleObject = bodystyleObject.getJSONObject(i);
-                            Bodystyle model = new Bodystyle();
-                            model.setBodystyleId(tmpBodystyleObject.getInt("value"));
-                            model.setParamBodystyleName(tmpBodystyleObject.getString("name"));
-                            paramBodystyleArrayList.add(model);
+                        if (response.body() != null) {
+                            bodystyleObject = new JSONArray(response.body().string());
+                            for (int i = 0; i < bodystyleObject.length(); i++) {
+                                JSONObject tmpBodystyleObject = bodystyleObject.getJSONObject(i);
+                                Bodystyle model = new Bodystyle();
+                                model.setBodystyleId(tmpBodystyleObject.getInt("value"));
+                                model.setParamBodystyleName(tmpBodystyleObject.getString("name"));
+                                paramBodystyleArrayList.add(model);
+                            }
+                            Log.d(TAG, "fetchBodystyleIdList: " + paramBodystyleArrayList);
+                            saveData(paramBodystyleArrayList, "bodystyle");
+                        } else {
+                            showEmptyStub();
                         }
-                        Log.d(TAG, "fetchBodystyleIdList: " + paramBodystyleArrayList);
-                        saveData(paramBodystyleArrayList, "bodystyle");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
@@ -180,15 +184,19 @@ public class MainActivity extends AppCompatActivity {
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     try {
                         showContent();
-                        bodystyleObject = new JSONArray(response.body().string());
-                        for (int i = 0; i < bodystyleObject.length(); i++) {
-                            JSONObject tmpObj = bodystyleObject.getJSONObject(i);
-                            Mark model = new Mark();
-                            model.setParamMarkName(tmpObj.getString("name"));
-                            model.setMarkId(tmpObj.getInt("value"));
-                            paramMarkArrayList.add(model);
+                        if (response.body() != null) {
+                            bodystyleObject = new JSONArray(response.body().string());
+                            for (int i = 0; i < bodystyleObject.length(); i++) {
+                                JSONObject tmpObj = bodystyleObject.getJSONObject(i);
+                                Mark model = new Mark();
+                                model.setParamMarkName(tmpObj.getString("name"));
+                                model.setMarkId(tmpObj.getInt("value"));
+                                paramMarkArrayList.add(model);
+                            }
+                            saveData(paramMarkArrayList, "mark");
+                        } else {
+                            showEmptyStub();
                         }
-                        saveData(paramMarkArrayList, "mark");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
@@ -232,19 +240,23 @@ public class MainActivity extends AppCompatActivity {
     }
     private void fetchStatesIdList() {
         paramStatesArrayList = new ArrayList<>();
-        Call<ResponseBody> statesCall = ApiManager.getInstance().searchStates(API_KEY);
+        final Call<ResponseBody> statesCall = ApiManager.getInstance().searchStates(API_KEY);
         statesCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     showContent();
-                    JSONArray statesObject = new JSONArray(response.body().string());
-                    for (int i = 0; i < statesObject.length(); i++) {
-                        JSONObject tmpStateObject = statesObject.getJSONObject(i);
-                        State model = new State();
-                        model.setParamStateName(tmpStateObject.getString("name"));
-                        model.setStateId(tmpStateObject.getInt("value"));
-                        paramStatesArrayList.add(model);
+                    if (response.body() != null) {
+                        JSONArray statesObject = new JSONArray(response.body().string());
+                        for (int i = 0; i < statesObject.length(); i++) {
+                            JSONObject tmpStateObject = statesObject.getJSONObject(i);
+                            State model = new State();
+                            model.setParamStateName(tmpStateObject.getString("name"));
+                            model.setStateId(tmpStateObject.getInt("value"));
+                            paramStatesArrayList.add(model);
+                        }
+                    } else {
+                        showEmptyStub();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -295,13 +307,17 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     showContent();
-                    JSONArray gearboxArray = new JSONArray(response.body().string());
-                    for (int i = 0; i < gearboxArray.length(); i++) {
-                        JSONObject gearboxObject = gearboxArray.getJSONObject(i);
-                        Gearbox model = new Gearbox();
-                        model.setParamGearboxName(gearboxObject.getString("name"));
-                        model.setGearboxId(gearboxObject.getInt("value"));
-                        paramGearboxArrayList.add(model);
+                    if (response.body() != null) {
+                        JSONArray gearboxArray = new JSONArray(response.body().string());
+                        for (int i = 0; i < gearboxArray.length(); i++) {
+                            JSONObject gearboxObject = gearboxArray.getJSONObject(i);
+                            Gearbox model = new Gearbox();
+                            model.setParamGearboxName(gearboxObject.getString("name"));
+                            model.setGearboxId(gearboxObject.getInt("value"));
+                            paramGearboxArrayList.add(model);
+                        }
+                    } else {
+                        showEmptyStub();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -323,13 +339,17 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     showContent();
-                    JSONArray fuelTypeArray = new JSONArray(response.body().string());
-                    for (int i = 0; i < fuelTypeArray.length(); i++) {
-                        JSONObject fuelTypeObject = fuelTypeArray.getJSONObject(i);
-                        FuelType model = new FuelType();
-                        model.setParamFuelTypeName(fuelTypeObject.getString("name"));
-                        model.setFuelTypeId(fuelTypeObject.getInt("value"));
-                        paramFuelTypeArrayList.add(model);
+                    if (response.body() != null) {
+                        JSONArray fuelTypeArray = new JSONArray(response.body().string());
+                        for (int i = 0; i < fuelTypeArray.length(); i++) {
+                            JSONObject fuelTypeObject = fuelTypeArray.getJSONObject(i);
+                            FuelType model = new FuelType();
+                            model.setParamFuelTypeName(fuelTypeObject.getString("name"));
+                            model.setFuelTypeId(fuelTypeObject.getInt("value"));
+                            paramFuelTypeArrayList.add(model);
+                        }
+                    } else {
+                        showEmptyStub();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

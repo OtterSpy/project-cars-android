@@ -45,7 +45,6 @@ public class SearchActivity extends AppCompatActivity {
 
     ArrayList<CarsModel> carInfoList;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +89,14 @@ public class SearchActivity extends AppCompatActivity {
 
         fetchCarList(pageNum);
 
+        EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                pageNum = page;
+                fetchCarList(page);
+            }
+        };
+
         Log.d(TAG, "onCreate: " + bodystyleId + " " + markId + " " + modelId + " " + stateId + " " + cityId + " " + gearboxId + " " + fuelTypeId + " " + priceFrom + " " + priceTo + " " + yearFrom + " " + yearTo + " " + raceFrom + " " + raceTo + " " + engineFrom + " " + engineTo + " " + currency);
 
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
@@ -108,14 +115,6 @@ public class SearchActivity extends AppCompatActivity {
         }));
 
         recyclerView.setAdapter(mAdapter);
-
-        EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                pageNum = page;
-                fetchCarList(page);
-            }
-        };
         recyclerView.addOnScrollListener(scrollListener);
     }
 
@@ -155,7 +154,6 @@ public class SearchActivity extends AppCompatActivity {
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                             try {
                                 if (response.body() != null) {
-
                                     JSONObject object = new JSONObject(response.body().string());
                                     JSONObject autoData = object.getJSONObject("autoData");
                                     JSONObject imageData = object.getJSONObject("photoData");

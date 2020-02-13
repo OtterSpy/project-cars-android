@@ -1,6 +1,8 @@
 package com.example.project_cars_android;
 
 import android.annotation.SuppressLint;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
@@ -127,6 +129,22 @@ public class DetailsInfo extends AppCompatActivity {
                 fetchPhotoData();
             }
         });
+        openRiaButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://auto.ria.com" + data.getAutoLink())));
+            }
+        });
+        openRiaButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                ClipboardManager clipboardManager = (ClipboardManager) DetailsInfo.this.getSystemService(CLIPBOARD_SERVICE);
+                ClipData clipData = ClipData.newPlainText("", "https://auto.ria.com" + data.getAutoLink());
+                clipboardManager.setPrimaryClip(clipData);
+                Toast.makeText(DetailsInfo.this, "Ссылка скопирована", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
 
         fetchPhotoData();
     }
@@ -162,15 +180,19 @@ public class DetailsInfo extends AppCompatActivity {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     showContent();
-                    JSONObject photoData = new JSONObject(response.body().string()).getJSONObject("data").getJSONObject(String.valueOf(autoId));
-                    for (Iterator<String> iterator = photoData.keys(); iterator.hasNext();) {
-                        String key = iterator.next();
-                        JSONArray photoUrl = photoData.getJSONObject(key).getJSONArray("formats");
-                        CarsModel photoDataModel = new CarsModel();
-                        photoDataModel.setPhotoUrl(String.valueOf(photoUrl.get(1)));
-                        photoDataArray.add(photoDataModel);
+                    if (response.body() != null) {
+                        JSONObject photoData = new JSONObject(response.body().string()).getJSONObject("data").getJSONObject(String.valueOf(autoId));
+                        for (Iterator<String> iterator = photoData.keys(); iterator.hasNext();) {
+                            String key = iterator.next();
+                            JSONArray photoUrl = photoData.getJSONObject(key).getJSONArray("formats");
+                            CarsModel photoDataModel = new CarsModel();
+                            photoDataModel.setPhotoUrl(String.valueOf(photoUrl.get(1)));
+                            photoDataArray.add(photoDataModel);
+                        }
+                        Log.d(SearchActivity.TAG, "onResponse1: " + photoDataArray);
+                    } else {
+                        showEmptyStub();
                     }
-                    Log.d(SearchActivity.TAG, "onResponse1: " + photoDataArray);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -183,10 +205,6 @@ public class DetailsInfo extends AppCompatActivity {
                 showEmptyStub();
             }
         });
-    }
-
-    public void openRiaOnClick(View view) {
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://auto.ria.com" + data.getAutoLink())));
     }
     private void showProgressBar() {
         progressBar.setVisibility(View.VISIBLE);
