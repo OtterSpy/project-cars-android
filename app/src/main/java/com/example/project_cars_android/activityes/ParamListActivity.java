@@ -1,4 +1,4 @@
-package com.example.project_cars_android;
+package com.example.project_cars_android.activityes;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,9 +11,19 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
-import com.example.project_cars_android.models.CarsModel;
+import com.example.project_cars_android.activityes.adapters.ParamListAdapter;
+import com.example.project_cars_android.R;
+import com.example.project_cars_android.helpers.RecyclerItemClickListener;
+import com.example.project_cars_android.models.Bodystyle;
+import com.example.project_cars_android.models.City;
+import com.example.project_cars_android.models.FuelType;
+import com.example.project_cars_android.models.Gearbox;
+import com.example.project_cars_android.models.Mark;
+import com.example.project_cars_android.models.Model;
+import com.example.project_cars_android.models.State;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ParamListActivity extends AppCompatActivity {
 
@@ -21,14 +31,15 @@ public class ParamListActivity extends AppCompatActivity {
     RecyclerView.Adapter mAdapter;
     RecyclerView.LayoutManager layoutManager;
 
-    ArrayList<CarsModel> bodystyleList;
-    ArrayList<CarsModel> marksList;
-    ArrayList<CarsModel> modelsList;
-    ArrayList<CarsModel> statesList;
-    ArrayList<CarsModel> citiesList;
-    ArrayList<CarsModel> gearboxesList;
-    ArrayList<CarsModel> fuelTypeList;
-    ArrayList<CarsModel> tmpArray;
+
+    List<Bodystyle> bodystyleList;
+    List<Mark> marksList;
+    List<Model> modelsList;
+    List<State> statesList;
+    List<City> citiesList;
+    List<Gearbox> gearboxesList;
+    List<FuelType> fuelTypeList;
+    List tmpArray;
 
     EditText searchParamEditText;
 
@@ -42,13 +53,13 @@ public class ParamListActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerViewParamList.setLayoutManager(layoutManager);
 
-        bodystyleList = (ArrayList<CarsModel>) getIntent().getSerializableExtra("bodystyles");
-        marksList = (ArrayList<CarsModel>) getIntent().getSerializableExtra("marks");
-        modelsList = (ArrayList<CarsModel>) getIntent().getSerializableExtra("models");
-        statesList = (ArrayList<CarsModel>) getIntent().getSerializableExtra("states");
-        citiesList = (ArrayList<CarsModel>) getIntent().getSerializableExtra("cities");
-        gearboxesList = (ArrayList<CarsModel>) getIntent().getSerializableExtra("gearboxes");
-        fuelTypeList = (ArrayList<CarsModel>) getIntent().getSerializableExtra("fuelTypes");
+        bodystyleList = (List<Bodystyle>) getIntent().getSerializableExtra("bodystyles");
+        marksList = (List<Mark>) getIntent().getSerializableExtra("marks");
+        modelsList = (List<Model>) getIntent().getSerializableExtra("models");
+        statesList = (List<State>) getIntent().getSerializableExtra("states");
+        citiesList = (List<City>) getIntent().getSerializableExtra("cities");
+        gearboxesList = (List<Gearbox>) getIntent().getSerializableExtra("gearboxes");
+        fuelTypeList = (List<FuelType>) getIntent().getSerializableExtra("fuelTypes");
 
         if (bodystyleList != null) {
             mAdapter = new ParamListAdapter(bodystyleList, true, false, false, false, false, false, false);
@@ -66,20 +77,16 @@ public class ParamListActivity extends AppCompatActivity {
             mAdapter = new ParamListAdapter(fuelTypeList, false, false, false, false, false, false, true);
         }
 
-        //TODO: Переделать это говно:
-
-
         searchParamEditText.addTextChangedListener(new TextWatcher() {
-
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                bodystyleList = (ArrayList<CarsModel>) getIntent().getSerializableExtra("bodystyles");
-                marksList = (ArrayList<CarsModel>) getIntent().getSerializableExtra("marks");
-                modelsList = (ArrayList<CarsModel>) getIntent().getSerializableExtra("models");
-                statesList = (ArrayList<CarsModel>) getIntent().getSerializableExtra("states");
-                citiesList = (ArrayList<CarsModel>) getIntent().getSerializableExtra("cities");
-                gearboxesList = (ArrayList<CarsModel>) getIntent().getSerializableExtra("gearboxes");
-                fuelTypeList = (ArrayList<CarsModel>) getIntent().getSerializableExtra("fuelTypes");
+                bodystyleList = (List<Bodystyle>) getIntent().getSerializableExtra("bodystyles");
+                marksList = (List<Mark>) getIntent().getSerializableExtra("marks");
+                modelsList = (List<Model>) getIntent().getSerializableExtra("models");
+                statesList = (List<State>) getIntent().getSerializableExtra("states");
+                citiesList = (List<City>) getIntent().getSerializableExtra("cities");
+                gearboxesList = (List<Gearbox>) getIntent().getSerializableExtra("gearboxes");
+                fuelTypeList = (List<FuelType>) getIntent().getSerializableExtra("fuelTypes");
                 Log.d("KEK", "beforeTextChanged: ");
             }
 
@@ -88,15 +95,16 @@ public class ParamListActivity extends AppCompatActivity {
                 tmpArray = new ArrayList<>();
                 if (bodystyleList != null) {
                     for (int i = 0; i < bodystyleList.size(); i++) {
-                        CarsModel bodystylesTmp = bodystyleList.get(i);
+                        Bodystyle bodystylesTmp = bodystyleList.get(i);
                         if (bodystylesTmp.getParamBodystyleName().toLowerCase().contains(s)) {
                             tmpArray.add(bodystylesTmp);
                         }
                     }
                     bodystyleList = tmpArray;
-                } else if (marksList != null) {
+                }
+                else if (marksList != null) {
                     for (int i = 0; i < marksList.size(); i++) {
-                        CarsModel marksTmp = marksList.get(i);
+                        Mark marksTmp = marksList.get(i);
                         if (marksTmp.getParamMarkName().toLowerCase().contains(s)) {
                             tmpArray.add(marksTmp);
                         }
@@ -104,7 +112,7 @@ public class ParamListActivity extends AppCompatActivity {
                     marksList = tmpArray;
                 } else if (modelsList != null) {
                     for (int i = 0; i < modelsList.size(); i++) {
-                        CarsModel modelsTmp = modelsList.get(i);
+                        Model modelsTmp = modelsList.get(i);
                         if (modelsTmp.getParamModelName().toLowerCase().contains(s)) {
                             tmpArray.add(modelsTmp);
                         }
@@ -112,7 +120,7 @@ public class ParamListActivity extends AppCompatActivity {
                     modelsList = tmpArray;
                 } else if (statesList != null) {
                     for (int i = 0; i < statesList.size(); i++) {
-                        CarsModel statesTmp = statesList.get(i);
+                        State statesTmp = statesList.get(i);
                         if (statesTmp.getParamStateName().toLowerCase().contains(s)) {
                             tmpArray.add(statesTmp);
                         }
@@ -120,7 +128,7 @@ public class ParamListActivity extends AppCompatActivity {
                     statesList = tmpArray;
                 } else if (citiesList != null) {
                     for (int i = 0; i < citiesList.size(); i++) {
-                        CarsModel citiesTmp = citiesList.get(i);
+                        City citiesTmp = citiesList.get(i);
                         if (citiesTmp.getParamCityName().toLowerCase().contains(s)) {
                             tmpArray.add(citiesTmp);
                         }
@@ -128,7 +136,7 @@ public class ParamListActivity extends AppCompatActivity {
                     citiesList = tmpArray;
                 } else if (gearboxesList != null) {
                     for (int i = 0; i < gearboxesList.size(); i++) {
-                        CarsModel gearboxTmp = gearboxesList.get(i);
+                        Gearbox gearboxTmp = gearboxesList.get(i);
                         if (gearboxTmp.getParamGearboxName().toLowerCase().contains(s)) {
                             tmpArray.add(gearboxTmp);
                         }
@@ -136,7 +144,7 @@ public class ParamListActivity extends AppCompatActivity {
                     gearboxesList = tmpArray;
                 } else if (fuelTypeList != null) {
                     for (int i = 0; i < fuelTypeList.size(); i++) {
-                        CarsModel fyelTypeTmp = fuelTypeList.get(i);
+                        FuelType fyelTypeTmp = fuelTypeList.get(i);
                         if (fyelTypeTmp.getParamFuelTypeName().toLowerCase().contains(s)) {
                             tmpArray.add(fyelTypeTmp);
                         }
@@ -151,7 +159,8 @@ public class ParamListActivity extends AppCompatActivity {
                     mAdapter = new ParamListAdapter(bodystyleList, true, false, false, false, false, false, false);
                     mAdapter.notifyDataSetChanged();
                     recyclerViewParamList.setAdapter(mAdapter);
-                } else  if (marksList != null) {
+                }
+                else  if (marksList != null) {
                     mAdapter = new ParamListAdapter(marksList, false, true, false, false, false, false, false);
                     mAdapter.notifyDataSetChanged();
                     recyclerViewParamList.setAdapter(mAdapter);
@@ -190,7 +199,7 @@ public class ParamListActivity extends AppCompatActivity {
                     if (position == 0) {
                         allParamData("bodystyle", "bodystyleId", bodystyleList);
                     } else {
-                        CarsModel bodystyles = bodystyleList.get(position - 1);
+                        Bodystyle bodystyles = bodystyleList.get(position - 1);
                         Intent intent = new Intent(ParamListActivity.this, MainActivity.class);
                         intent.putExtra("bodystyle", bodystyles.getParamBodystyleName());
                         intent.putExtra("bodystyleId", bodystyles.getBodystyleId());
@@ -199,11 +208,12 @@ public class ParamListActivity extends AppCompatActivity {
                         Log.d("KEK", "onItemClick: " + position);
                         ParamListActivity.this.finish();
                     }
-                } else if (marksList != null) {
+                }
+                else if (marksList != null) {
                     if (position == 0) {
                         allParamData("mark", "markId", marksList);
                     } else {
-                        CarsModel marks = marksList.get(position - 1);
+                        Mark marks = marksList.get(position - 1);
                         Intent intent = new Intent(ParamListActivity.this, MainActivity.class);
                         intent.putExtra("mark", marks.getParamMarkName());
                         intent.putExtra("markId", marks.getMarkId());
@@ -215,7 +225,7 @@ public class ParamListActivity extends AppCompatActivity {
                     if (position == 0) {
                         allParamData("model", "modelId", modelsList);
                     } else {
-                        CarsModel models = modelsList.get(position - 1);
+                        Model models = modelsList.get(position - 1);
                         Intent intent = new Intent(ParamListActivity.this, MainActivity.class);
                         intent.putExtra("model", models.getParamModelName());
                         intent.putExtra("modelId", models.getModelId());
@@ -227,7 +237,7 @@ public class ParamListActivity extends AppCompatActivity {
                     if (position == 0) {
                         allParamData("state", "stateId", statesList);
                     } else {
-                        CarsModel states = statesList.get(position - 1);
+                        State states = statesList.get(position - 1);
                         Intent intent = new Intent(ParamListActivity.this, MainActivity.class);
                         intent.putExtra("state", states.getParamStateName());
                         intent.putExtra("stateId", states.getStateId());
@@ -239,7 +249,7 @@ public class ParamListActivity extends AppCompatActivity {
                     if (position == 0) {
                         allParamData("city", "cityId", citiesList);
                     } else {
-                        CarsModel cities = citiesList.get(position - 1);
+                        City cities = citiesList.get(position - 1);
                         Intent intent = new Intent(ParamListActivity.this, MainActivity.class);
                         intent.putExtra("city", cities.getParamCityName());
                         intent.putExtra("cityId", cities.getCityId());
@@ -251,7 +261,7 @@ public class ParamListActivity extends AppCompatActivity {
                     if (position == 0) {
                         allParamData("gearbox", "gearboxId", gearboxesList);
                     } else {
-                        CarsModel gearboxes = gearboxesList.get(position - 1);
+                        Gearbox gearboxes = gearboxesList.get(position - 1);
                         Intent intent = new Intent(ParamListActivity.this, MainActivity.class);
                         intent.putExtra("gearbox", gearboxes.getParamGearboxName());
                         intent.putExtra("gearboxId", gearboxes.getGearboxId());
@@ -263,7 +273,7 @@ public class ParamListActivity extends AppCompatActivity {
                     if (position == 0) {
                         allParamData("fuelType", "fuelTypeId", fuelTypeList);
                     } else {
-                        CarsModel fuelTypes = fuelTypeList.get(position - 1);
+                        FuelType fuelTypes = fuelTypeList.get(position - 1);
                         Intent intent = new Intent(ParamListActivity.this, MainActivity.class);
                         intent.putExtra("fuelType", fuelTypes.getParamFuelTypeName());
                         intent.putExtra("fuelTypeId", fuelTypes.getFuelTypeId());
@@ -279,7 +289,7 @@ public class ParamListActivity extends AppCompatActivity {
         }));
         recyclerViewParamList.setAdapter(mAdapter);
     }
-    public void allParamData (String name, String nameId, ArrayList<CarsModel> arrayList) {
+    public void allParamData (String name, String nameId, List arrayList) {
         Intent intent = new Intent(ParamListActivity.this, MainActivity.class);
         intent.putExtra(name, "Все");
         intent.putExtra(nameId, 0);
