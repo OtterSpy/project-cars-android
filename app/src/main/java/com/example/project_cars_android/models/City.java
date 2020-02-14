@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 public class City implements Serializable {
 
-    int cityId;
-    String paramCityName;
+    private int cityId;
+    private String paramCityName;
 
     public int getCityId() {
         return cityId;

@@ -6,8 +6,8 @@ import io.realm.RealmObject;
 
 public class Mark extends RealmObject implements Serializable {
 
-    int markId;
-    String paramMarkName;
+    private int markId;
+    private String paramMarkName;
 
     public int getMarkId() {
         return markId;

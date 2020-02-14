@@ -6,8 +6,8 @@ import io.realm.RealmObject;
 
 public class Gearbox extends RealmObject implements Serializable {
 
-    int gearboxId;
-    String paramGearboxName;
+    private int gearboxId;
+    private String paramGearboxName;
 
     public int getGearboxId() {
         return gearboxId;

@@ -6,8 +6,8 @@ import io.realm.RealmObject;
 
 public class FuelType extends RealmObject implements Serializable {
 
-    int fuelTypeId;
-    String paramFuelTypeName;
+    private int fuelTypeId;
+    private String paramFuelTypeName;
 
     public int getFuelTypeId() {
         return fuelTypeId;

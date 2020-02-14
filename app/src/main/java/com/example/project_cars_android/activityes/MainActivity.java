@@ -1,4 +1,4 @@
-package com.example.project_cars_android;
+package com.example.project_cars_android.activityes;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.project_cars_android.R;
 import com.example.project_cars_android.models.Bodystyle;
 import com.example.project_cars_android.models.City;
 import com.example.project_cars_android.models.FuelType;
@@ -40,7 +41,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.example.project_cars_android.SearchActivity.API_KEY;
+import static com.example.project_cars_android.activityes.SearchActivity.API_KEY;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     List<City> paramCityArrayList;
     List<Gearbox> paramGearboxArrayList;
     List<FuelType> paramFuelTypeArrayList;
-    JSONArray bodystyleObject;
+    JSONArray jsonArray;
 
     Integer paramBodystyleId;
     Integer paramMarkId;
@@ -150,9 +151,9 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         showContent();
                         if (response.body() != null) {
-                            bodystyleObject = new JSONArray(response.body().string());
-                            for (int i = 0; i < bodystyleObject.length(); i++) {
-                                JSONObject tmpBodystyleObject = bodystyleObject.getJSONObject(i);
+                            jsonArray = new JSONArray(response.body().string());
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject tmpBodystyleObject = jsonArray.getJSONObject(i);
                                 Bodystyle model = new Bodystyle();
                                 model.setBodystyleId(tmpBodystyleObject.getInt("value"));
                                 model.setParamBodystyleName(tmpBodystyleObject.getString("name"));
@@ -185,9 +186,9 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         showContent();
                         if (response.body() != null) {
-                            bodystyleObject = new JSONArray(response.body().string());
-                            for (int i = 0; i < bodystyleObject.length(); i++) {
-                                JSONObject tmpObj = bodystyleObject.getJSONObject(i);
+                            jsonArray = new JSONArray(response.body().string());
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject tmpObj = jsonArray.getJSONObject(i);
                                 Mark model = new Mark();
                                 model.setParamMarkName(tmpObj.getString("name"));
                                 model.setMarkId(tmpObj.getInt("value"));
@@ -216,9 +217,9 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     try {
-                        JSONArray object = new JSONArray(response.body().string());
-                        for (int i = 0; i < object.length(); i++) {
-                            JSONObject tmpObj = object.getJSONObject(i);
+                        jsonArray = new JSONArray(response.body().string());
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject tmpObj = jsonArray.getJSONObject(i);
                             Model model = new Model();
                             model.setParamModelName(tmpObj.getString("name"));
                             model.setModelId(tmpObj.getInt("value"));
@@ -247,9 +248,9 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     showContent();
                     if (response.body() != null) {
-                        JSONArray statesObject = new JSONArray(response.body().string());
-                        for (int i = 0; i < statesObject.length(); i++) {
-                            JSONObject tmpStateObject = statesObject.getJSONObject(i);
+                        jsonArray= new JSONArray(response.body().string());
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject tmpStateObject = jsonArray.getJSONObject(i);
                             State model = new State();
                             model.setParamStateName(tmpStateObject.getString("name"));
                             model.setStateId(tmpStateObject.getInt("value"));
@@ -278,9 +279,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    JSONArray cityObject = new JSONArray(response.body().string());
-                    for (int i = 0; i < cityObject.length(); i++) {
-                        JSONObject tmpCityObject = cityObject.getJSONObject(i);
+                    jsonArray = new JSONArray(response.body().string());
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject tmpCityObject = jsonArray.getJSONObject(i);
                         City model = new City();
                         model.setParamCityName(tmpCityObject.getString("name"));
                         model.setCityId(tmpCityObject.getInt("value"));
@@ -308,9 +309,9 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     showContent();
                     if (response.body() != null) {
-                        JSONArray gearboxArray = new JSONArray(response.body().string());
-                        for (int i = 0; i < gearboxArray.length(); i++) {
-                            JSONObject gearboxObject = gearboxArray.getJSONObject(i);
+                        jsonArray = new JSONArray(response.body().string());
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject gearboxObject = jsonArray.getJSONObject(i);
                             Gearbox model = new Gearbox();
                             model.setParamGearboxName(gearboxObject.getString("name"));
                             model.setGearboxId(gearboxObject.getInt("value"));
@@ -340,9 +341,9 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     showContent();
                     if (response.body() != null) {
-                        JSONArray fuelTypeArray = new JSONArray(response.body().string());
-                        for (int i = 0; i < fuelTypeArray.length(); i++) {
-                            JSONObject fuelTypeObject = fuelTypeArray.getJSONObject(i);
+                        jsonArray = new JSONArray(response.body().string());
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject fuelTypeObject = jsonArray.getJSONObject(i);
                             FuelType model = new FuelType();
                             model.setParamFuelTypeName(fuelTypeObject.getString("name"));
                             model.setFuelTypeId(fuelTypeObject.getInt("value"));
@@ -408,6 +409,26 @@ public class MainActivity extends AppCompatActivity {
        Intent intent = new Intent(MainActivity.this, ParamListActivity.class);
        intent.putExtra("fuelTypes", (Serializable) paramFuelTypeArrayList);
        startActivityForResult(intent, 6);
+    }
+    public void resetOnClick(View view) {
+        bodystyleButton.setText(getResources().getString(R.string.all_param));
+        paramBodystyleId = 0;
+        markButton.setText(getResources().getString(R.string.all_param));
+        paramMarkId = 0;
+        stateButton.setText(getResources().getString(R.string.all_param));
+        paramStateId = 0;
+        gearboxButton.setText(getResources().getString(R.string.all_param));
+        paramGearboxId = 0;
+        fuelTypeButton.setText(getResources().getString(R.string.all_param));
+        paramFuelTypeId = 0;
+        priceFromEditText.setText("");
+        priceToEditText.setText("");
+        yearFromEditText.setText("");
+        yearToEditText.setText("");
+        raceFromEditText.setText("");
+        raceToEditText.setText("");
+        engineFromEditText.setText("");
+        engineToEditText.setText("");
     }
     public void searchClick(View view) {
         if (!priceFromEditText.getText().toString().equals("")) {

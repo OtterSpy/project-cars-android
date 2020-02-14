@@ -1,6 +1,7 @@
-package com.example.project_cars_android;
+package com.example.project_cars_android.activityes;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +12,10 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.project_cars_android.helpers.EndlessRecyclerViewScrollListener;
+import com.example.project_cars_android.R;
+import com.example.project_cars_android.helpers.RecyclerItemClickListener;
+import com.example.project_cars_android.activityes.adapters.SearchListAdapter;
 import com.example.project_cars_android.models.CarsModel;
 import com.example.project_cars_android.networking.ApiManager;
 
@@ -32,7 +37,7 @@ public class SearchActivity extends AppCompatActivity {
     final static String TAG = "KEK";
     int pageNum;
 
-    RecyclerView recyclerView;
+    RecyclerView searchRecyclerView;
     RecyclerView.Adapter mAdapter;
     RecyclerView.LayoutManager layoutManager;
     ProgressBar progressBar;
@@ -54,10 +59,10 @@ public class SearchActivity extends AppCompatActivity {
         emptyStub = findViewById(R.id.emptyStab);
         noResultTextView = findViewById(R.id.noResultTextView);
         carInfoList = new ArrayList<>();
-        recyclerView = findViewById(R.id.recyclerView);
+        searchRecyclerView = findViewById(R.id.recyclerView);
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new RecyclerViewAdapter(carInfoList);
+        searchRecyclerView.setLayoutManager(layoutManager);
+        mAdapter = new SearchListAdapter(carInfoList);
 
         bodystyleId = getIntent().getIntExtra("bodystyleId", 0);
         markId = getIntent().getIntExtra("markId", 0);
@@ -99,13 +104,17 @@ public class SearchActivity extends AppCompatActivity {
 
         Log.d(TAG, "onCreate: " + bodystyleId + " " + markId + " " + modelId + " " + stateId + " " + cityId + " " + gearboxId + " " + fuelTypeId + " " + priceFrom + " " + priceTo + " " + yearFrom + " " + yearTo + " " + raceFrom + " " + raceTo + " " + engineFrom + " " + engineTo + " " + currency);
 
-        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+        searchRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, searchRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                CarsModel carsModel = carInfoList.get(position);
-                Intent intent = new Intent(SearchActivity.this, DetailsInfo.class);
-                intent.putExtra("details", carsModel);
-                startActivity(intent);
+                if (carInfoList != null) {
+                    CarsModel carsModel = carInfoList.get(position);
+                    Intent intent = new Intent(SearchActivity.this, DetailsInfo.class);
+                    intent.putExtra("details", carsModel);
+                    startActivity(intent);
+                } else {
+                    showEmptyStub();
+                }
             }
 
             @Override
@@ -114,8 +123,8 @@ public class SearchActivity extends AppCompatActivity {
             }
         }));
 
-        recyclerView.setAdapter(mAdapter);
-        recyclerView.addOnScrollListener(scrollListener);
+        searchRecyclerView.setAdapter(mAdapter);
+        searchRecyclerView.addOnScrollListener(scrollListener);
     }
 
     private void fetchCarList(int page) {
@@ -123,7 +132,7 @@ public class SearchActivity extends AppCompatActivity {
         Call<ResponseBody> searchCall = ApiManager.getInstance().search(API_KEY, bodystyleId, markId, modelId, stateId, cityId, gearboxId, fuelTypeId, page, 10, priceFrom, priceTo, yearFrom, yearTo, raceFrom, raceTo, engineFrom, engineTo, currency);
         searchCall.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 try {
                     showRecyclerView();
                     if (response.body() != null) {
@@ -151,7 +160,7 @@ public class SearchActivity extends AppCompatActivity {
                     Call<ResponseBody> infoCall = ApiManager.getInstance().info(API_KEY, dataInfo);
                     infoCall.enqueue(new Callback<ResponseBody>() {
                         @Override
-                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                             try {
                                 if (response.body() != null) {
                                     JSONObject object = new JSONObject(response.body().string());
@@ -190,14 +199,14 @@ public class SearchActivity extends AppCompatActivity {
                             }
                         }
                         @Override
-                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
                             showEmptyStub();
                         }
                     });
                 }
             }
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
                 showEmptyStub();
                 Log.d(TAG, "onFailure:");
             }
@@ -206,26 +215,26 @@ public class SearchActivity extends AppCompatActivity {
     }
     private void showProgressBar() {
         progressBar.setVisibility(View.VISIBLE);
-        recyclerView.setVisibility(View.GONE);
+        searchRecyclerView.setVisibility(View.GONE);
         noResultTextView.setVisibility(View.GONE);
         emptyStub.setVisibility(View.GONE);
     }
     private void showRecyclerView() {
         progressBar.setVisibility(View.GONE);
-        recyclerView.setVisibility(View.VISIBLE);
+        searchRecyclerView.setVisibility(View.VISIBLE);
         noResultTextView.setVisibility(View.GONE);
         emptyStub.setVisibility(View.GONE);
 
     }
     private void showNoResultTextView() {
         progressBar.setVisibility(View.GONE);
-        recyclerView.setVisibility(View.GONE);
+        searchRecyclerView.setVisibility(View.GONE);
         noResultTextView.setVisibility(View.VISIBLE);
         emptyStub.setVisibility(View.GONE);
     }
     private void showEmptyStub() {
         progressBar.setVisibility(View.GONE);
-        recyclerView.setVisibility(View.GONE);
+        searchRecyclerView.setVisibility(View.GONE);
         noResultTextView.setVisibility(View.GONE);
         emptyStub.setVisibility(View.VISIBLE);
     }

@@ -156,7 +156,8 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/textColor"
                 android:paddingHorizontal="20dp"
-                android:background="@drawable/param_button"
+                android:stateListAnimator="@null"
+                android:background="@drawable/open_ria_button"
                 android:layout_gravity="end|center_vertical"
                 android:layout_rowSpan="2"
                 android:text="@string/open_in_ria"/>

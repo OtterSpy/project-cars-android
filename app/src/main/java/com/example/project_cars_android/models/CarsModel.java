@@ -6,26 +6,26 @@ import java.io.Serializable;
 
 public class CarsModel implements Serializable {
 
-    int id;
-    int count;
-    int adCounter;
+    private int id;
+    private int count;
+    private int adCounter;
 
     private String photoData;
 
-    String photoUrl;
-    String engine;
-    String gearbox;
-    String year;
-    String markName;
-    String modelName;
-    String price;
-    String priceUah;
-    String mileage;
-    String city;
-    String regionName;
-    String subCategoryNameEng;
-    String description;
-    String autoLink;
+    private String photoUrl;
+    private String engine;
+    private String gearbox;
+    private String year;
+    private String markName;
+    private String modelName;
+    private String price;
+    private String priceUah;
+    private String mileage;
+    private String city;
+    private String regionName;
+    private String subCategoryNameEng;
+    private String description;
+    private String autoLink;
 
     public int getAdCounter() {
         return adCounter;

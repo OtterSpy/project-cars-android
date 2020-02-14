@@ -1,29 +1,30 @@
-package com.example.project_cars_android;
+package com.example.project_cars_android.activityes.adapters;
 
-import android.content.Context;
+import android.annotation.SuppressLint;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.project_cars_android.R;
 import com.example.project_cars_android.models.CarsModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolder> {
+public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.RecyclerViewHolder> {
 
     private ArrayList<CarsModel> mDataset;
 
-    public static class RecyclerViewHolder extends RecyclerView.ViewHolder{
+    static class RecyclerViewHolder extends RecyclerView.ViewHolder{
 
-        public ImageView carImageView;
-        public TextView firstLineTextView, carNameTextView, priceTextView, priceUahTextView, carMileAgeTextView;
+        ImageView carImageView;
+        TextView firstLineTextView, carNameTextView, priceTextView, priceUahTextView, carMileAgeTextView;
 
-        public RecyclerViewHolder(View itemView) {
+        RecyclerViewHolder(View itemView) {
             super(itemView);
 
             carImageView = itemView.findViewById(R.id.carImageView);
@@ -35,18 +36,20 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
     }
 
-    public RecyclerViewAdapter (ArrayList<CarsModel> myDataset) {
+    public SearchListAdapter(ArrayList<CarsModel> myDataset) {
         mDataset = myDataset;
     }
 
+    @NonNull
     @Override
-    public RecyclerViewAdapter.RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_holder, parent, false);
+    public SearchListAdapter.RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_item, parent, false);
         return new RecyclerViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(RecyclerViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
         CarsModel carID = mDataset.get(position);
         holder.firstLineTextView.setText(carID.getEngine() + " | " + carID.getGearbox() + " | " + carID.getYear() + " г.");
         holder.carNameTextView.setText(carID.getMarkName() + " " + carID.getModelName());

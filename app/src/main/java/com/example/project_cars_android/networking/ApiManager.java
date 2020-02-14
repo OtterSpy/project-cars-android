@@ -6,7 +6,7 @@ import retrofit2.Retrofit;
 
 public class ApiManager {
 
-    final static String BASE_URL = "https://developers.ria.com/";
+    private final static String BASE_URL = "https://developers.ria.com/";
 
     private static ProjectCarsApi service;
 

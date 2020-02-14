@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.project_cars_android.PhotosListAdapter;
+import com.example.project_cars_android.activityes.adapters.PhotosListAdapter;
 import com.example.project_cars_android.R;
 import com.example.project_cars_android.models.CarsModel;
 

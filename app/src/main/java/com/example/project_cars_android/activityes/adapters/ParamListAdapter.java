@@ -1,17 +1,18 @@
-package com.example.project_cars_android;
+package com.example.project_cars_android.activityes.adapters;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.project_cars_android.R;
 import com.example.project_cars_android.models.Bodystyle;
 import com.example.project_cars_android.models.City;
 import com.example.project_cars_android.models.FuelType;
 import com.example.project_cars_android.models.Gearbox;
 import com.example.project_cars_android.models.Mark;
 import com.example.project_cars_android.models.Model;
-import com.example.project_cars_android.models.ParamDataset;
 import com.example.project_cars_android.models.State;
 
 import java.util.List;
@@ -25,11 +26,11 @@ public class ParamListAdapter extends RecyclerView.Adapter<ParamListAdapter.Para
 
     private boolean isBodystyle, isModel, isCity, isMark, isState, isGearbox, isFuelType;
 
-    public static class ParamListViewHolder extends RecyclerView.ViewHolder {
+    static class ParamListViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView paramTextView;
+        TextView paramTextView;
 
-        public ParamListViewHolder(View itemView) {
+        ParamListViewHolder(View itemView) {
             super(itemView);
 
             paramTextView = itemView.findViewById(R.id.paramName);
@@ -48,15 +49,15 @@ public class ParamListAdapter extends RecyclerView.Adapter<ParamListAdapter.Para
         this.isFuelType = isFuelType;
     }
 
+    @NonNull
     @Override
-    public ParamListViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public ParamListViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.param_item, viewGroup, false);
-        ParamListViewHolder paramListViewHolder = new ParamListViewHolder(view);
-        return paramListViewHolder;
+        return new ParamListViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ParamListViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ParamListViewHolder holder, int position) {
         if (isHeader(position)) {
             holder.paramTextView.setText("Все");
             return;

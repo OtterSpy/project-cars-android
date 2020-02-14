@@ -6,8 +6,8 @@ import io.realm.RealmObject;
 
 public class State extends RealmObject implements Serializable {
 
-    int stateId;
-    String paramStateName;
+    private int stateId;
+    private String paramStateName;
 
     public int getStateId() {
         return stateId;

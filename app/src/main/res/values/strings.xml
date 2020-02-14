@@ -36,6 +36,7 @@
     <string name="select_engine">Объём двигателя: л</string>
     <string name="year_of_issue">Год выпуска:</string>
     <string name="search">Поиск</string>
+    <string name="reset">Сбросить</string>
     <string name="open_in_ria">Открыть на RIA.com</string>
 
     <string name="reload">Обновить</string>

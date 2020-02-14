@@ -1,10 +1,11 @@
-package com.example.project_cars_android;
+package com.example.project_cars_android.activityes;
 
 import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +21,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.project_cars_android.R;
 import com.example.project_cars_android.fragments.PhotoViewerFragment;
 import com.example.project_cars_android.models.CarsModel;
 import com.example.project_cars_android.networking.ApiManager;
@@ -38,7 +40,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.example.project_cars_android.SearchActivity.API_KEY;
+import static com.example.project_cars_android.activityes.SearchActivity.API_KEY;
 
 public class DetailsInfo extends AppCompatActivity {
 
@@ -177,7 +179,7 @@ public class DetailsInfo extends AppCompatActivity {
         final Call<ResponseBody> photoCall = ApiManager.getInstance().photoData(autoId, API_KEY);
         photoCall.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 try {
                     showContent();
                     if (response.body() != null) {

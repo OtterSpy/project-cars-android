@@ -1,4 +1,4 @@
-package com.example.project_cars_android;
+package com.example.project_cars_android.activityes;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
+import com.example.project_cars_android.activityes.adapters.ParamListAdapter;
+import com.example.project_cars_android.R;
+import com.example.project_cars_android.helpers.RecyclerItemClickListener;
 import com.example.project_cars_android.models.Bodystyle;
 import com.example.project_cars_android.models.City;
 import com.example.project_cars_android.models.FuelType;
@@ -74,11 +77,7 @@ public class ParamListActivity extends AppCompatActivity {
             mAdapter = new ParamListAdapter(fuelTypeList, false, false, false, false, false, false, true);
         }
 
-        //TODO: Переделать это говно:
-
-
         searchParamEditText.addTextChangedListener(new TextWatcher() {
-
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 bodystyleList = (List<Bodystyle>) getIntent().getSerializableExtra("bodystyles");

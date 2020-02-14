@@ -1,4 +1,4 @@
-package com.example.project_cars_android;
+package com.example.project_cars_android.helpers;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

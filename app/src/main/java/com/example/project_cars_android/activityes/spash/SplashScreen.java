@@ -1,9 +1,12 @@
-package com.example.project_cars_android;
+package com.example.project_cars_android.activityes.spash;
 
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.example.project_cars_android.R;
+import com.example.project_cars_android.activityes.MainActivity;
 
 public class SplashScreen extends AppCompatActivity {
 

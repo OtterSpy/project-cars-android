@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 public class Model implements Serializable {
 
-    int modelId;
-    String paramModelName;
+    private int modelId;
+    private String paramModelName;
 
     public int getModelId() {
         return modelId;
