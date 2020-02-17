@@ -2,8 +2,6 @@ package com.example.project_cars_android.models;
 
 import java.io.Serializable;
 
-
-
 public class CarsModel implements Serializable {
 
     private int id;
@@ -26,6 +24,15 @@ public class CarsModel implements Serializable {
     private String subCategoryNameEng;
     private String description;
     private String autoLink;
+    private String addDate;
+
+    public String getAddDate() {
+        return addDate;
+    }
+
+    public void setAddDate(String addDate) {
+        this.addDate = addDate;
+    }
 
     public int getAdCounter() {
         return adCounter;

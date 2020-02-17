@@ -16,11 +16,10 @@ import java.util.ArrayList;
 
 public class PhotoViewerFragment extends Fragment {
 
-    RecyclerView photosRecyclerView;
-    RecyclerView.Adapter mAdapter;
-    RecyclerView.LayoutManager layoutManager;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager layoutManager;
 
-    ArrayList<CarsModel> photosList = null;
+    private ArrayList<CarsModel> photosList = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,7 +33,7 @@ public class PhotoViewerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_photo_viewer, container, false);
         if (photosList != null) {
-            photosRecyclerView = view.findViewById(R.id.photosRecyclerView);
+            RecyclerView photosRecyclerView = view.findViewById(R.id.photosRecyclerView);
             photosRecyclerView.setLayoutManager(layoutManager);
             photosRecyclerView.setAdapter(mAdapter);
         }

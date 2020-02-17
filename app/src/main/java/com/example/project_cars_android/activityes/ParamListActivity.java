@@ -27,28 +27,26 @@ import java.util.List;
 
 public class ParamListActivity extends AppCompatActivity {
 
-    RecyclerView recyclerViewParamList;
-    RecyclerView.Adapter mAdapter;
-    RecyclerView.LayoutManager layoutManager;
+    private RecyclerView recyclerViewParamList;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager layoutManager;
 
 
-    List<Bodystyle> bodystyleList;
-    List<Mark> marksList;
-    List<Model> modelsList;
-    List<State> statesList;
-    List<City> citiesList;
-    List<Gearbox> gearboxesList;
-    List<FuelType> fuelTypeList;
-    List tmpArray;
-
-    EditText searchParamEditText;
+    private List<Bodystyle> bodystyleList;
+    private List<Mark> marksList;
+    private List<Model> modelsList;
+    private List<State> statesList;
+    private List<City> citiesList;
+    private List<Gearbox> gearboxesList;
+    private List<FuelType> fuelTypeList;
+    private List tmpArray;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_param_list);
 
-        searchParamEditText = findViewById(R.id.searchParamEditText);
+        EditText searchParamEditText = findViewById(R.id.searchParamEditText);
         recyclerViewParamList = findViewById(R.id.recyclerViewParamList);
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerViewParamList.setLayoutManager(layoutManager);
