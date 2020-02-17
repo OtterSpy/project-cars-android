@@ -44,17 +44,16 @@ import static com.example.project_cars_android.activityes.SearchActivity.API_KEY
 
 public class DetailsInfo extends AppCompatActivity {
 
-    ImageView detailsInfoImageView;
-    TextView carNameInfoTextView, cityInfo, mileAgeInfo, carType, engineInfo, gearboxInfo, detailsInfo, priceInfo, priceUahInfo, photoCounter;
-    Button openRiaButton;
-    Integer autoId;
-    CarsModel data;
-    ProgressBar progressBar;
-    LinearLayout emptyStub;
-    ScrollView contentScrollView;
-    GridLayout footerGridLayout;
+    private static final String OPEN_RIA_BASE_URL = "https://auto.ria.com";
 
-    ArrayList<CarsModel> photoDataArray;
+    private Integer autoId;
+    private CarsModel data;
+    private ProgressBar progressBar;
+    private LinearLayout emptyStub;
+    private ScrollView contentScrollView;
+    private GridLayout footerGridLayout;
+
+    private ArrayList<CarsModel> photoDataArray;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -62,18 +61,19 @@ public class DetailsInfo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_info);
 
-        detailsInfoImageView = findViewById(R.id.detailsInfoImageView);
-        carNameInfoTextView = findViewById(R.id.carNameInfoTextView);
-        cityInfo = findViewById(R.id.cityInfo);
-        mileAgeInfo = findViewById(R.id.mileAgeInfo);
-        carType = findViewById(R.id.carType);
-        engineInfo = findViewById(R.id.engineInfo);
-        gearboxInfo = findViewById(R.id.gearboxInfo);
-        detailsInfo = findViewById(R.id.detailsInfo);
-        priceInfo = findViewById(R.id.priceInfo);
-        priceUahInfo = findViewById(R.id.priceUahInfo);
-        openRiaButton = findViewById(R.id.openRiaButton);
-        photoCounter = findViewById(R.id.photoCountTextView);
+        ImageView detailsInfoImageView = findViewById(R.id.detailsInfoImageView);
+        TextView carNameInfoTextView = findViewById(R.id.carNameInfoTextView);
+        TextView cityInfo = findViewById(R.id.cityInfoTextView);
+        TextView mileAgeInfo = findViewById(R.id.mileAgeInfoTextView);
+        TextView carType = findViewById(R.id.carTypeTextView);
+        TextView engineInfo = findViewById(R.id.engineInfoTextView);
+        TextView gearboxInfo = findViewById(R.id.gearboxInfoTextView);
+        TextView detailsInfo = findViewById(R.id.detailsInfoTextView);
+        TextView priceInfo = findViewById(R.id.priceInfoTextView);
+        TextView priceUahInfo = findViewById(R.id.priceUahInfoTextView);
+        Button openRiaButton = findViewById(R.id.openRiaButton);
+        TextView photoCounter = findViewById(R.id.photoCountTextView);
+        TextView dateTextView = findViewById(R.id.dateTextView);
         progressBar = findViewById(R.id.progressBar);
         emptyStub = findViewById(R.id.emptyStab);
         contentScrollView = findViewById(R.id.contentScrollView);
@@ -81,7 +81,10 @@ public class DetailsInfo extends AppCompatActivity {
 
         data = (CarsModel) getIntent().getSerializableExtra("details");
 
+        String dateString = data.getAddDate();
+        String[] publicationDate = dateString.split("-");
         autoId = data.getId();
+        dateTextView.setText("Дата публикации: " + publicationDate[2].split(" ")[0] + "." + publicationDate[1] + "." + publicationDate[0] + " ");
         Picasso.get().load(data.getPhotoData()).into(detailsInfoImageView);
         carNameInfoTextView.setText(data.getMarkName() + " " + data.getModelName() + " | " + data.getYear() + " год.");
         cityInfo.setText(data.getCity() + ", " + data.getRegionName() + " обл.");
@@ -134,7 +137,7 @@ public class DetailsInfo extends AppCompatActivity {
         openRiaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://auto.ria.com" + data.getAutoLink())));
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(OPEN_RIA_BASE_URL + data.getAutoLink())));
             }
         });
         openRiaButton.setOnLongClickListener(new View.OnLongClickListener() {
@@ -184,6 +187,7 @@ public class DetailsInfo extends AppCompatActivity {
                     showContent();
                     if (response.body() != null) {
                         JSONObject photoData = new JSONObject(response.body().string()).getJSONObject("data").getJSONObject(String.valueOf(autoId));
+                        photoDataArray.clear();
                         for (Iterator<String> iterator = photoData.keys(); iterator.hasNext();) {
                             String key = iterator.next();
                             JSONArray photoUrl = photoData.getJSONObject(key).getJSONArray("formats");

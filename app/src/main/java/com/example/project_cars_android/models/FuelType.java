@@ -2,9 +2,8 @@ package com.example.project_cars_android.models;
 
 import java.io.Serializable;
 
-import io.realm.RealmObject;
 
-public class FuelType extends RealmObject implements Serializable {
+public class FuelType implements Serializable {
 
     private int fuelTypeId;
     private String paramFuelTypeName;

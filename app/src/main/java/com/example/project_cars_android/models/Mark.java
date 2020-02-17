@@ -2,9 +2,7 @@ package com.example.project_cars_android.models;
 
 import java.io.Serializable;
 
-import io.realm.RealmObject;
-
-public class Mark extends RealmObject implements Serializable {
+public class Mark implements Serializable {
 
     private int markId;
     private String paramMarkName;

@@ -37,18 +37,17 @@ public class SearchActivity extends AppCompatActivity {
     final static String TAG = "KEK";
     int pageNum;
 
-    RecyclerView searchRecyclerView;
-    RecyclerView.Adapter mAdapter;
-    RecyclerView.LayoutManager layoutManager;
-    ProgressBar progressBar;
-    LinearLayout emptyStub;
+    private RecyclerView searchRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private ProgressBar progressBar;
+    private LinearLayout emptyStub;
 
-    TextView noResultTextView;
+    private TextView noResultTextView;
 
-    Integer bodystyleId, markId, modelId, stateId, cityId, gearboxId, fuelTypeId, priceFrom, priceTo, yearFrom, yearTo, raceFrom, raceTo, currency;
-    Float engineFrom, engineTo;
+    private Integer bodystyleId, markId, modelId, stateId, cityId, gearboxId, fuelTypeId, priceFrom, priceTo, yearFrom, yearTo, raceFrom, raceTo, currency;
+    private Float engineFrom, engineTo;
 
-    ArrayList<CarsModel> carInfoList;
+    private ArrayList<CarsModel> carInfoList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +59,7 @@ public class SearchActivity extends AppCompatActivity {
         noResultTextView = findViewById(R.id.noResultTextView);
         carInfoList = new ArrayList<>();
         searchRecyclerView = findViewById(R.id.recyclerView);
-        layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         searchRecyclerView.setLayoutManager(layoutManager);
         mAdapter = new SearchListAdapter(carInfoList);
 
@@ -186,6 +185,8 @@ public class SearchActivity extends AppCompatActivity {
                                     carsModel.setDescription(autoData.getString("description"));
                                     carsModel.setAutoLink(object.getString("linkToView"));
                                     carsModel.setCount(imageData.getInt("count"));
+                                    carsModel.setAddDate(object.getString("addDate"));
+                                    Log.d(TAG, "onResponse: " + object.getString("addDate"));
 
                                     carInfoList.add(carsModel);
                                     mAdapter.notifyDataSetChanged();

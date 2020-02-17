@@ -1,7 +1,6 @@
 package com.example.project_cars_android.activityes;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -23,8 +22,6 @@ import com.example.project_cars_android.models.Mark;
 import com.example.project_cars_android.models.Model;
 import com.example.project_cars_android.models.State;
 import com.example.project_cars_android.networking.ApiManager;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,7 +29,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,49 +42,41 @@ import static com.example.project_cars_android.activityes.SearchActivity.API_KEY
 public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = "KEK";
-    List<Bodystyle> paramBodystyleArrayList;
-    List<Mark> paramMarkArrayList;
-    List<Model> paramModelArrayList;
-    List<State> paramStatesArrayList;
-    List<City> paramCityArrayList;
-    List<Gearbox> paramGearboxArrayList;
-    List<FuelType> paramFuelTypeArrayList;
-    JSONArray jsonArray;
+    private List<Bodystyle> paramBodystyleArrayList;
+    private List<Mark> paramMarkArrayList;
+    private List<Model> paramModelArrayList;
+    private List<State> paramStatesArrayList;
+    private List<City> paramCityArrayList;
+    private List<Gearbox> paramGearboxArrayList;
+    private List<FuelType> paramFuelTypeArrayList;
+    private JSONArray jsonArray;
 
-    Integer paramBodystyleId;
-    Integer paramMarkId;
-    Integer paramModelId;
-    Integer paramStateId;
-    Integer paramCityId;
-    Integer paramGearboxId;
-    Integer paramFuelTypeId;
-    Integer priceFrom;
-    Integer priceTo;
-    Integer yearFrom;
-    Integer yearTo;
-    Integer raceFrom;
-    Integer raceTo;
-    Float engineFrom;
-    Float engineTo;
-    Integer currency;
+    private int paramBodystyleId;
+    private int paramMarkId;
+    private int paramModelId;
+    private int paramStateId;
+    private int paramCityId;
+    private int paramGearboxId;
+    private int paramFuelTypeId;
+    private int currency;
 
-    LinearLayout contentLinearLayout;
-    LinearLayout emptyStub;
-    ProgressBar progressBar;
+    private LinearLayout contentLinearLayout;
+    private LinearLayout emptyStub;
+    private ProgressBar progressBar;
 
-    Button bodystyleButton;
-    Button markButton;
-    Button modelButton;
-    Button stateButton;
-    Button cityButton;
-    Button gearboxButton;
-    Button fuelTypeButton;
+    private Button bodystyleButton;
+    private Button markButton;
+    private Button modelButton;
+    private Button stateButton;
+    private Button cityButton;
+    private Button gearboxButton;
+    private Button fuelTypeButton;
 
 
-    EditText priceFromEditText, priceToEditText;
-    EditText yearFromEditText, yearToEditText;
-    EditText raceFromEditText, raceToEditText;
-    EditText engineFromEditText, engineToEditText;
+    private EditText priceFromEditText, priceToEditText;
+    private EditText yearFromEditText, yearToEditText;
+    private EditText raceFromEditText, raceToEditText;
+    private EditText engineFromEditText, engineToEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
                         showContent();
                         if (response.body() != null) {
                             jsonArray = new JSONArray(response.body().string());
+                            paramBodystyleArrayList.clear();
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject tmpBodystyleObject = jsonArray.getJSONObject(i);
                                 Bodystyle model = new Bodystyle();
@@ -159,8 +148,6 @@ public class MainActivity extends AppCompatActivity {
                                 model.setParamBodystyleName(tmpBodystyleObject.getString("name"));
                                 paramBodystyleArrayList.add(model);
                             }
-                            Log.d(TAG, "fetchBodystyleIdList: " + paramBodystyleArrayList);
-                            saveData(paramBodystyleArrayList, "bodystyle");
                         } else {
                             showEmptyStub();
                         }
@@ -187,6 +174,7 @@ public class MainActivity extends AppCompatActivity {
                         showContent();
                         if (response.body() != null) {
                             jsonArray = new JSONArray(response.body().string());
+                            paramMarkArrayList.clear();
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject tmpObj = jsonArray.getJSONObject(i);
                                 Mark model = new Mark();
@@ -194,7 +182,6 @@ public class MainActivity extends AppCompatActivity {
                                 model.setMarkId(tmpObj.getInt("value"));
                                 paramMarkArrayList.add(model);
                             }
-                            saveData(paramMarkArrayList, "mark");
                         } else {
                             showEmptyStub();
                         }
@@ -218,6 +205,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     try {
                         jsonArray = new JSONArray(response.body().string());
+                        paramModelArrayList.clear();
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject tmpObj = jsonArray.getJSONObject(i);
                             Model model = new Model();
@@ -249,6 +237,7 @@ public class MainActivity extends AppCompatActivity {
                     showContent();
                     if (response.body() != null) {
                         jsonArray= new JSONArray(response.body().string());
+                        paramStatesArrayList.clear();
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject tmpStateObject = jsonArray.getJSONObject(i);
                             State model = new State();
@@ -280,6 +269,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     jsonArray = new JSONArray(response.body().string());
+                    paramCityArrayList.clear();
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject tmpCityObject = jsonArray.getJSONObject(i);
                         City model = new City();
@@ -310,6 +300,7 @@ public class MainActivity extends AppCompatActivity {
                     showContent();
                     if (response.body() != null) {
                         jsonArray = new JSONArray(response.body().string());
+                        paramGearboxArrayList.clear();
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject gearboxObject = jsonArray.getJSONObject(i);
                             Gearbox model = new Gearbox();
@@ -342,6 +333,7 @@ public class MainActivity extends AppCompatActivity {
                     showContent();
                     if (response.body() != null) {
                         jsonArray = new JSONArray(response.body().string());
+                        paramFuelTypeArrayList.clear();
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject fuelTypeObject = jsonArray.getJSONObject(i);
                             FuelType model = new FuelType();
@@ -431,6 +423,15 @@ public class MainActivity extends AppCompatActivity {
         engineToEditText.setText("");
     }
     public void searchClick(View view) {
+        int priceFrom;
+        int priceTo;
+        int yearFrom;
+        int yearTo;
+        int raceFrom;
+        int raceTo;
+        float engineFrom;
+        float engineTo;
+
         if (!priceFromEditText.getText().toString().equals("")) {
             priceFrom = Integer.parseInt(priceFromEditText.getText().toString());
         } else {
@@ -539,28 +540,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-    private void saveData(List list, String name) {
-        SharedPreferences sharedPreferences = getSharedPreferences("sPref", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(list);
-        editor.putString(name, json);
-        editor.apply();
-
-        Log.d(TAG, "saveData: " + " " + name + " " + list);
-    }
-    private List loadData(String name) {
-        SharedPreferences sharedPreferences = getSharedPreferences("sPref", MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = sharedPreferences.getString(name, null);
-        Type type = new TypeToken<List>(){}.getType();
-        List list = gson.fromJson(json, type);
-        if (list == null) {
-            list = new ArrayList<>();
-        }
-        Log.d(TAG, "loadData: " + " " + name + " " + list);
-        return list;
-    }
     @Override
     protected void onResume() {
         super.onResume();
@@ -599,12 +578,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (paramBodystyleArrayList.size() != 0) {
-            saveData(paramBodystyleArrayList, "bodystyle");
-        }
-        if (paramMarkArrayList.size() != 0){
-            saveData(paramMarkArrayList, "mark");
-        }
         Log.d(TAG, "onDestroy: ");
     }
     private void showProgressBar() {
